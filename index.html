@@ -12220,6 +12220,143 @@ const FORMULA_QUIZ_QUESTIONS = [
   {id:'fq_038',chapter:'Formula Quiz',type:'single',question:'Why does the F1 score use harmonic mean instead of arithmetic mean?',options:['Harmonic mean is always larger','Harmonic mean penalizes imbalance — a low value in either metric strongly pulls F1 down','Arithmetic mean is undefined when P+R=1','Harmonic mean is faster to compute'],answer:1,explanation:'The harmonic mean is especially sensitive to small values. If Precision = 0 or Recall = 0, F1 = 0. This penalizes models that excel on one metric while failing the other.'}
 ];
 
+// ===== COMPARISON TRUE/FALSE QUESTIONS =====
+const COMPARISON_TF_QUESTIONS = [
+  // PCA vs LDA
+  { id:'ctf_001', type:'true_false', chapter:'Dimensionality Reduction', answer:false,
+    question:'PCA is a supervised method that uses class labels to find the best projection.',
+    explanation:'PCA is unsupervised — it maximises variance without knowing class labels. LDA is the supervised counterpart that maximises class separation.' },
+  { id:'ctf_002', type:'true_false', chapter:'Dimensionality Reduction', answer:true,
+    question:'LDA can produce at most C−1 discriminant components, where C is the number of classes.',
+    explanation:'LDA is limited to C−1 dimensions because the between-class scatter matrix S_B has rank at most C−1.' },
+  { id:'ctf_003', type:'true_false', chapter:'Dimensionality Reduction', answer:true,
+    question:'PCA chooses directions that maximise the variance of the projected data.',
+    explanation:'PCA finds eigenvectors of the covariance matrix, ordered by eigenvalue size — higher eigenvalue = more variance explained.' },
+  { id:'ctf_004', type:'true_false', chapter:'Dimensionality Reduction', answer:false,
+    question:'LDA and PCA will always produce identical projections when applied to the same dataset.',
+    explanation:'LDA uses class labels to maximise separation between classes; PCA ignores labels and maximises total variance. They produce different projections.' },
+  { id:'ctf_005', type:'true_false', chapter:'Dimensionality Reduction', answer:true,
+    question:'PCA requires the data to be standardised before application so that no single feature dominates due to its scale.',
+    explanation:'Without standardisation, features with larger numeric ranges dominate the covariance matrix, distorting the principal components.' },
+  { id:'ctf_006', type:'true_false', chapter:'Dimensionality Reduction', answer:false,
+    question:'LDA maximises the within-class scatter relative to the between-class scatter.',
+    explanation:'LDA maximises the ratio of between-class scatter to within-class scatter: J(w) = wᵀS_Bw / wᵀS_Ww. The goal is to separate classes, not spread them within.' },
+  { id:'ctf_007', type:'true_false', chapter:'Dimensionality Reduction', answer:true,
+    question:'PCA can be used for both dimensionality reduction and data visualisation (e.g., 2D scatter plots).',
+    explanation:'Projecting to the top 2 principal components is a standard technique for visualising high-dimensional data.' },
+  { id:'ctf_008', type:'true_false', chapter:'Dimensionality Reduction', answer:false,
+    question:'The number of principal components in PCA is always limited to the number of classes minus one.',
+    explanation:'That limit applies to LDA, not PCA. PCA can produce up to min(n−1, p) components where n = samples and p = features.' },
+
+  // Ridge vs Lasso
+  { id:'ctf_009', type:'true_false', chapter:'Regression', answer:true,
+    question:'Lasso (L1) regularisation can set some feature weights exactly to zero, effectively performing feature selection.',
+    explanation:'The L1 penalty creates a "diamond" shaped constraint region with corners on the axes, where the optimal solution often lands — setting some coefficients to exactly zero.' },
+  { id:'ctf_010', type:'true_false', chapter:'Regression', answer:false,
+    question:'Ridge regression can set coefficients exactly to zero and is therefore suitable for feature selection.',
+    explanation:'Ridge (L2) shrinks coefficients toward zero but never reaches exactly zero. Lasso (L1) is the regularisation method used for feature selection.' },
+  { id:'ctf_011', type:'true_false', chapter:'Regression', answer:true,
+    question:'Both Ridge and Lasso reduce overfitting by penalising large weight values.',
+    explanation:'Both add a regularisation term to the loss function that penalises large weights, reducing model complexity and variance.' },
+  { id:'ctf_012', type:'true_false', chapter:'Regression', answer:false,
+    question:'A larger λ (lambda) in Ridge regression leads to a more flexible model with lower bias.',
+    explanation:'Larger λ means stronger regularisation → more shrinkage → simpler model → higher bias, lower variance. Smaller λ gives more flexibility.' },
+  { id:'ctf_013', type:'true_false', chapter:'Regression', answer:true,
+    question:'Lasso is preferred over Ridge when you suspect that only a few features are truly relevant.',
+    explanation:'Lasso performs automatic feature selection by zeroing out irrelevant features, making it ideal for sparse problems.' },
+  { id:'ctf_014', type:'true_false', chapter:'Regression', answer:true,
+    question:'Ridge regression adds a term proportional to the sum of squared weights (λΣwⱼ²) to the loss function.',
+    explanation:'This is the L2 penalty. It penalises large weights smoothly and results in all weights being shrunk toward — but not to — zero.' },
+  { id:'ctf_015', type:'true_false', chapter:'Regression', answer:false,
+    question:'Lasso uses the sum of squared weights as its penalty term.',
+    explanation:'Lasso uses the sum of absolute weights (L1: λΣ|wⱼ|). Ridge uses the sum of squared weights (L2: λΣwⱼ²).' },
+
+  // Bagging vs Boosting
+  { id:'ctf_016', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'Bagging trains multiple models in parallel on different bootstrap samples of the training data.',
+    explanation:'Bootstrap Aggregating (Bagging) creates multiple independent datasets by sampling with replacement and trains a model on each simultaneously.' },
+  { id:'ctf_017', type:'true_false', chapter:'Ensembles', answer:false,
+    question:'Boosting trains models in parallel, with each model independent of the previous ones.',
+    explanation:'Boosting is sequential — each new model focuses on the mistakes made by the previous ones. Only Bagging trains models in parallel.' },
+  { id:'ctf_018', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'Bagging primarily reduces variance, while Boosting primarily reduces bias.',
+    explanation:'Bagging averages many high-variance models (e.g., deep trees) to reduce variance. Boosting combines weak learners sequentially to reduce bias.' },
+  { id:'ctf_019', type:'true_false', chapter:'Ensembles', answer:false,
+    question:'Boosting is generally more robust to noisy data and outliers than Bagging.',
+    explanation:'Boosting assigns higher weights to misclassified examples, making it more sensitive to noise and outliers. Bagging is more robust.' },
+  { id:'ctf_020', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'Random Forest is a Bagging method that also introduces feature randomness at each split.',
+    explanation:'Random Forest uses bootstrap samples (Bagging) and additionally selects a random subset of features at each node split, decorrelating the trees.' },
+  { id:'ctf_021', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'In AdaBoost, misclassified training examples receive higher weights in the next round.',
+    explanation:'AdaBoost increases weights for incorrectly classified examples so the next weak learner focuses more on difficult cases.' },
+  { id:'ctf_022', type:'true_false', chapter:'Ensembles', answer:false,
+    question:'In AdaBoost, all weak learners are given equal weight in the final prediction.',
+    explanation:'Each weak learner gets a weight α based on its error rate. More accurate learners receive higher α and contribute more to the final decision.' },
+
+  // SVM vs KNN
+  { id:'ctf_023', type:'true_false', chapter:'Classification Algorithms', answer:true,
+    question:'KNN is a lazy learner — it does no training and stores all training examples until prediction time.',
+    explanation:'KNN memorises the training set and computes distances at prediction time. There is no explicit training phase.' },
+  { id:'ctf_024', type:'true_false', chapter:'Classification Algorithms', answer:false,
+    question:'SVM stores all training examples to make predictions.',
+    explanation:'SVM only stores the support vectors (points near the decision boundary). All other training examples can be discarded after training.' },
+  { id:'ctf_025', type:'true_false', chapter:'Classification Algorithms', answer:true,
+    question:'Both SVM and KNN require feature scaling (e.g., standardisation) for optimal performance.',
+    explanation:'SVM is sensitive to scale because margins depend on distances. KNN uses distance metrics directly, so unscaled features distort results.' },
+  { id:'ctf_026', type:'true_false', chapter:'Classification Algorithms', answer:true,
+    question:'SVM with an RBF kernel can classify non-linearly separable data.',
+    explanation:'The RBF kernel implicitly maps data to a higher-dimensional space where a linear boundary can separate the classes.' },
+  { id:'ctf_027', type:'true_false', chapter:'Classification Algorithms', answer:false,
+    question:'KNN performs well in high-dimensional spaces because more dimensions provide more information.',
+    explanation:'KNN suffers from the curse of dimensionality — in high dimensions, all points become equally distant, making nearest-neighbour search meaningless.' },
+
+  // K-Means vs Hierarchical
+  { id:'ctf_028', type:'true_false', chapter:'Clustering', answer:false,
+    question:'K-Means clustering can handle clusters of arbitrary shape equally well.',
+    explanation:'K-Means assumes spherical, equally-sized clusters. It struggles with elongated or irregularly shaped clusters. Hierarchical with single linkage handles arbitrary shapes better.' },
+  { id:'ctf_029', type:'true_false', chapter:'Clustering', answer:true,
+    question:'Hierarchical clustering does not require you to specify the number of clusters in advance.',
+    explanation:'Hierarchical clustering produces a dendrogram. You choose the number of clusters after the fact by cutting the dendrogram at the desired level.' },
+  { id:'ctf_030', type:'true_false', chapter:'Clustering', answer:false,
+    question:'K-Means is guaranteed to find the globally optimal clustering.',
+    explanation:'K-Means converges to a local minimum that depends on initialisation. Running it multiple times with different seeds (n_init) helps find a better solution.' },
+  { id:'ctf_031', type:'true_false', chapter:'Clustering', answer:true,
+    question:'K-Means scales better to large datasets than agglomerative hierarchical clustering.',
+    explanation:'K-Means is O(nkt) where n=samples, k=clusters, t=iterations. Hierarchical clustering is O(n² log n) or worse, making it impractical for large datasets.' },
+  { id:'ctf_032', type:'true_false', chapter:'Clustering', answer:true,
+    question:'The elbow method plots inertia (within-cluster SSE) against k to help choose the optimal number of clusters.',
+    explanation:'As k increases, inertia decreases. The "elbow" — where the rate of decrease sharply slows — suggests the optimal k.' },
+
+  // Bias vs Variance
+  { id:'ctf_033', type:'true_false', chapter:'Overfitting & Bias/Variance', answer:true,
+    question:'A model with high bias underfits the training data and performs poorly on both training and test sets.',
+    explanation:'High bias means the model is too simple to capture the underlying pattern — it makes systematic errors on all data.' },
+  { id:'ctf_034', type:'true_false', chapter:'Overfitting & Bias/Variance', answer:false,
+    question:'A model with high variance underfits and performs equally on training and test data.',
+    explanation:'High variance means the model overfits — it performs well on training data but poorly on unseen test data due to memorising noise.' },
+  { id:'ctf_035', type:'true_false', chapter:'Overfitting & Bias/Variance', answer:true,
+    question:'Adding more training data generally helps reduce variance more than it reduces bias.',
+    explanation:'More data makes it harder for the model to overfit to noise, reducing variance. Bias (from the model structure) is less affected by data size.' },
+  { id:'ctf_036', type:'true_false', chapter:'Overfitting & Bias/Variance', answer:true,
+    question:'Regularisation (Ridge/Lasso) increases bias but decreases variance.',
+    explanation:'Regularisation constrains the model, introducing bias, but prevents overfitting to training noise, reducing variance. This is the classic bias–variance tradeoff.' },
+  { id:'ctf_037', type:'true_false', chapter:'Overfitting & Bias/Variance', answer:false,
+    question:'A deep decision tree without pruning typically has high bias and low variance.',
+    explanation:'A deep unpruned tree has low bias (fits training data very well) but high variance (sensitive to small changes in training data). Pruning or depth limits reduce variance.' },
+
+  // Softmax vs Sigmoid
+  { id:'ctf_038', type:'true_false', chapter:'Classification Algorithms', answer:true,
+    question:'Softmax outputs a probability distribution where all class probabilities sum to 1.',
+    explanation:'Softmax computes e^(z_k) / Σ e^(z_j) for each class k, ensuring outputs are positive and sum to exactly 1.' },
+  { id:'ctf_039', type:'true_false', chapter:'Classification Algorithms', answer:false,
+    question:'Sigmoid is used for multi-class classification problems with more than two classes.',
+    explanation:'Sigmoid is used for binary classification. For multi-class problems (≥3 classes), Softmax is the appropriate output function.' },
+  { id:'ctf_040', type:'true_false', chapter:'Classification Algorithms', answer:true,
+    question:'For binary classification, Sigmoid and Softmax produce equivalent results.',
+    explanation:'With two classes, Softmax reduces to the Sigmoid function. The probability of class 1 is e^(z₁)/(e^(z₁)+e^(z₂)) = 1/(1+e^(z₂−z₁)) = σ(z).' },
+];
+
 // ===== STATE =====
 const STORAGE_KEY = 'dat200_exam_v1';
 const state = {
@@ -12496,6 +12633,30 @@ function renderHome() {
   list.appendChild(mixedCard);
 
   wrap.appendChild(list);
+
+  // ---- FOLDER: Comparison True/False ----
+  const cmpTfFolder = el('div', { class: 'folder-section' });
+  const cmpTfHeader = el('button', { class: 'folder-header' });
+  cmpTfHeader.innerHTML = `${state.lang === 'no' ? 'Sammenligning — Sant / Usant' : 'Comparison — True / False'} <em class="folder-chevron">▾</em>`;
+  const cmpTfContent = el('div', { class: 'folder-content' });
+  const cmpTopics = [
+    { label: state.lang === 'no' ? 'PCA vs LDA (8 spørsmål)' : 'PCA vs LDA (8 questions)',       ids: ['ctf_001','ctf_002','ctf_003','ctf_004','ctf_005','ctf_006','ctf_007','ctf_008'] },
+    { label: state.lang === 'no' ? 'Ridge vs Lasso (7 spørsmål)' : 'Ridge vs Lasso (7 questions)', ids: ['ctf_009','ctf_010','ctf_011','ctf_012','ctf_013','ctf_014','ctf_015'] },
+    { label: state.lang === 'no' ? 'Bagging vs Boosting (7 spørsmål)' : 'Bagging vs Boosting (7 questions)', ids: ['ctf_016','ctf_017','ctf_018','ctf_019','ctf_020','ctf_021','ctf_022'] },
+    { label: state.lang === 'no' ? 'SVM vs KNN (5 spørsmål)' : 'SVM vs KNN (5 questions)',        ids: ['ctf_023','ctf_024','ctf_025','ctf_026','ctf_027'] },
+    { label: state.lang === 'no' ? 'K-Means vs Hierarkisk (5 spørsmål)' : 'K-Means vs Hierarchical (5 questions)', ids: ['ctf_028','ctf_029','ctf_030','ctf_031','ctf_032'] },
+    { label: state.lang === 'no' ? 'Bias vs Varians (5 spørsmål)' : 'Bias vs Variance (5 questions)', ids: ['ctf_033','ctf_034','ctf_035','ctf_036','ctf_037'] },
+    { label: state.lang === 'no' ? 'Softmax vs Sigmoid (3 spørsmål)' : 'Softmax vs Sigmoid (3 questions)', ids: ['ctf_038','ctf_039','ctf_040'] },
+  ];
+  cmpTfContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(COMPARISON_TF_QUESTIONS) }, state.lang === 'no' ? `Alle sammenligninger (${COMPARISON_TF_QUESTIONS.length} spørsmål)` : `All comparisons (${COMPARISON_TF_QUESTIONS.length} questions)`));
+  cmpTopics.forEach(({ label, ids }) => {
+    const pool = COMPARISON_TF_QUESTIONS.filter(q => ids.includes(q.id));
+    cmpTfContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool) }, label));
+  });
+  cmpTfHeader.onclick = () => { cmpTfHeader.classList.toggle('open'); cmpTfContent.classList.toggle('open'); };
+  cmpTfFolder.appendChild(cmpTfHeader);
+  cmpTfFolder.appendChild(cmpTfContent);
+  wrap.appendChild(cmpTfFolder);
 
   // ---- FOLDER: Practice Exams (Top 100) ----
   const pracFolder = el('div', { class: 'folder-section' });

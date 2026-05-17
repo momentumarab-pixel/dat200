@@ -12023,7 +12023,7 @@
 // ===== TRANSLATIONS =====
 const LABELS = {
   en: {
-    h1:'Ready for the exam.', lede:'DAT200 exam simulator — 563 bank questions + 250 A-mode exam questions.',
+    h1:'DAT200 Exam Simulator', lede:'',
     btn_formula:'Formula Sheet', btn_comparison:'Comparison Mode',
     info_covered:'What is covered',
     info_master_title:'Master Exam — 330 questions',
@@ -12086,7 +12086,7 @@ const LABELS = {
     progress_overall:'Overall accuracy', progress_chapter:'Chapter breakdown',
   },
   no: {
-    h1:'Klar for eksamen.', lede:'DAT200 eksamenssimulator — 563 bankspørsmål + 250 A-modus eksamensspørsmål.',
+    h1:'DAT200 Eksamenssimulator', lede:'',
     btn_formula:'Formelark', btn_comparison:'Sammenligningsmodus',
     info_covered:'Hva er dekket',
     info_master_title:'Mastereksamen — 330 spørsmål',
@@ -16789,7 +16789,7 @@ const EKSAMENSPAKKE_EXAMS = (() => {
   return exams.map(e => shuffle(e).slice(0, 20));
 })();
 
-// ===== SISTE-DAG DRILL — 205 spørsmål =====
+// ===== SISTE-DAG DRILL — 185 spørsmål =====
 const LASTDAY_QUESTIONS = [
 
 // ── FILL-BLANK STYLE (single, ___ in question, 4 options) ──────────────────
@@ -17844,6 +17844,7 @@ function formatTime(s) {
 function render() {
   const main = $('#main');
   try {
+  if (state.view !== 'home' && state._cdInterval) { clearInterval(state._cdInterval); state._cdInterval = null; }
   main.innerHTML = '';
   renderTopbar();
   if (state.view === 'home') main.appendChild(renderHome());
@@ -17894,55 +17895,41 @@ function renderTopbar() {
 function renderHome() {
   const wrap = el('div', { class: 'start-screen' });
   wrap.appendChild(el('h1', {}, t('h1')));
-  wrap.appendChild(el('p', { class: 'lede' }, t('lede')));
+
+  // ── Exam countdown (only on home page) ────────────────────────────────
+  const cdBox = el('div', {
+    id: 'home-countdown',
+    style: 'margin:0 auto 28px;padding:20px 24px;max-width:520px;text-align:center;background:linear-gradient(135deg,#1e293b,#0f172a);color:#f8fafc;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,0.15);'
+  });
+  cdBox.appendChild(el('div', { style:'font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:8px;' }, state.lang==='no' ? 'Tid til eksamen' : 'Time until exam'));
+  const cdDisplay = el('div', { id:'cd-display', style:'font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:32px;font-weight:700;letter-spacing:1px;line-height:1.2;' }, '—');
+  cdBox.appendChild(cdDisplay);
+  cdBox.appendChild(el('div', { style:'font-size:13px;opacity:0.65;margin-top:6px;' }, state.lang==='no' ? 'Tirsdag 19. mai 2026 kl. 09:00' : 'Tuesday 19 May 2026 at 09:00'));
+  wrap.appendChild(cdBox);
+
+  // Start the countdown ticker (cleared when leaving home)
+  if (state._cdInterval) clearInterval(state._cdInterval);
+  const target = new Date('2026-05-19T09:00:00+02:00').getTime();
+  function tickCD() {
+    const display = document.getElementById('cd-display');
+    if (!display) { clearInterval(state._cdInterval); state._cdInterval = null; return; }
+    const ms = target - Date.now();
+    if (ms <= 0) { display.textContent = state.lang==='no' ? 'Eksamen pågår!' : 'Exam in progress!'; clearInterval(state._cdInterval); return; }
+    const d = Math.floor(ms / 86400000);
+    const h = Math.floor((ms % 86400000) / 3600000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
+    const pad = n => String(n).padStart(2,'0');
+    display.textContent = `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  tickCD();
+  state._cdInterval = setInterval(tickCD, 1000);
 
   const toolRow = el('div', { style: 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;' });
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'formulas'; render(); } }, t('btn_formula')));
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'comparison'; render(); } }, t('btn_comparison')));
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'progress'; render(); } }, t('btn_progress')));
   wrap.appendChild(toolRow);
-
-  const infoBox = el('div', { class: 'info-box visible' });
-
-  // Byline
-  const byline = el('p', { style: 'text-align:center;font-size:15px;font-weight:600;color:var(--ink-3);margin:0 0 4px;' }, 'Made by Haron Arab with love ');
-  byline.appendChild(el('span', { style: 'color:#e11d48;' }, '♥'));
-  infoBox.appendChild(byline);
-
-  // Coverage grid
-  const coverH = el('h3', {}, t('info_covered'));
-  infoBox.appendChild(coverH);
-  const grid = el('div', { class: 'info-grid' });
-
-  const masterInfo = el('div', { class: 'info-card' });
-  masterInfo.appendChild(el('div', { class: 'ic-title' }, t('info_master_title')));
-  masterInfo.appendChild(el('div', { class: 'ic-body' }, t('info_master_body')));
-  grid.appendChild(masterInfo);
-
-  const canvasInfo = el('div', { class: 'info-card' });
-  canvasInfo.appendChild(el('div', { class: 'ic-title' }, t('info_canvas_title')));
-  canvasInfo.appendChild(el('div', { class: 'ic-body' }, t('info_canvas_body')));
-  grid.appendChild(canvasInfo);
-  infoBox.appendChild(grid);
-
-  const qtH = el('h3', {}, t('info_qtypes'));
-  infoBox.appendChild(qtH);
-  const qtGrid = el('div', { class: 'qtypes-grid' });
-  const types = [
-    t('type_mc'), t('type_tf'), t('type_multi'), t('type_order'),
-    t('type_match'), t('type_fmatch'), t('type_sym'), t('type_code'),
-    t('type_plot'), t('type_fig'), t('type_scenario'),
-    t('type_sc'), t('type_sw'), t('type_process')
-  ];
-  types.forEach(t => {
-    const pill = el('span', { class: 'qtype-pill' }, t);
-    qtGrid.appendChild(pill);
-  });
-  infoBox.appendChild(qtGrid);
-
-  // Tips
-
-  wrap.appendChild(infoBox);
 
   // stats
   const totalQ = QUESTIONS.length;
@@ -19050,16 +19037,16 @@ function renderComparisonView() {
   const drillHeader = el('div', {class:'folder-header', onclick:()=>{
     drillList.style.display = drillList.style.display==='none'?'':'none';
   }});
-  drillHeader.innerHTML = 'Siste-dag Drill &mdash; 205 spørsmål (fill-blank, T/F, multi, match, code) <em class="folder-chevron">▾</em>';
+  drillHeader.innerHTML = 'Siste-dag Drill &mdash; 185 spørsmål (fill-blank, T/F, multi, match, code) <em class="folder-chevron">▾</em>';
   section.appendChild(drillHeader);
   const drillList = el('div', {class:'folder-list'});
 
   const drillTypes = [
-    {label:'All 205 questions', filter: q=>true},
+    {label:'All 185 questions', filter: q=>true},
     {label:'Fill-blank (50)', filter: q=>q.id.startsWith('ld_fb_')},
     {label:'True / False (45)', filter: q=>q.id.startsWith('ld_tf_')},
     {label:'Multi-select (35)', filter: q=>q.id.startsWith('ld_ms_')},
-    {label:'Match / Formula (30)', filter: q=>q.id.startsWith('ld_mt_')},
+    {label:'Match / Formula (10)', filter: q=>q.id.startsWith('ld_mt_')},
     {label:'Concept / Plot (25)', filter: q=>q.id.startsWith('ld_cp_')},
     {label:'Code / sklearn (20)', filter: q=>q.id.startsWith('ld_code_')},
   ];

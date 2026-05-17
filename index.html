@@ -12006,7 +12006,7 @@
 'use strict';
 
 // ===== LAST INN SPØRSMÅL =====
-const ALL_QUESTIONS = JSON.parse(document.getElementById('question-bank').textContent);
+const ALL_QUESTIONS = applyDistractorFixes(JSON.parse(document.getElementById('question-bank').textContent));
 const CANVAS_QUESTIONS = ALL_QUESTIONS.filter(q => q.id.startsWith('orig_'));
 const TOP100_QUESTIONS = ALL_QUESTIONS.filter(q => q.id.startsWith('top_'));
 const QUESTIONS = ALL_QUESTIONS.filter(q => !q.id.startsWith('orig_') && !q.id.startsWith('top_'));
@@ -12356,6 +12356,199 @@ const COMPARISON_TF_QUESTIONS = [
     question:'For binary classification, Sigmoid and Softmax produce equivalent results.',
     explanation:'With two classes, Softmax reduces to the Sigmoid function. The probability of class 1 is e^(z₁)/(e^(z₁)+e^(z₂)) = 1/(1+e^(z₂−z₁)) = σ(z).' },
 ];
+
+// ===== DISTRACTOR FIXES (balanced length + 1 near-correct per question) =====
+// Format: id -> [opt0, opt1, opt2, opt3]  (answer index unchanged)
+const DISTRACTOR_FIXES = {
+  top_011: [
+    "The number of classes minus one",
+    "The square root of the sample count",
+    "The number of samples n",
+    "The number of features p"
+  ],
+  top_023: [
+    "They grow proportionally larger as regularisation strength increases",
+    "They are shrunk toward zero but never reach exactly zero, as in Ridge",
+    "They are driven exactly to zero, performing feature selection",
+    "They oscillate around zero and stabilize at small non-zero values"
+  ],
+  top_071: [
+    "Precision vs. Recall plotted at various decision thresholds (PR curve)",
+    "True Positive Rate (TPR) vs. False Positive Rate (FPR) at various thresholds",
+    "F1-score vs. decision threshold at increasing levels of model complexity",
+    "Accuracy vs. false positive rate across different classification cutoffs"
+  ],
+  top_083: [
+    "Reduce training cost by projecting data to a lower-dimensional feature space",
+    "Enable linear algorithms to find nonlinear decision boundaries without explicit feature mapping",
+    "Allow linear classifiers to learn nonlinear patterns by explicitly expanding to higher dimensions",
+    "Remove the need for the C parameter by automatically selecting the optimal kernel"
+  ],
+  top_100: [
+    "Specificity (True Negative Rate)",
+    "Precision (Positive Predictive Value)",
+    "Recall (Sensitivity)",
+    "F1-score (harmonic mean of precision and recall)"
+  ],
+  top_024: [
+    "Larger C means stronger regularisation, resulting in a wider and softer margin",
+    "Smaller C means stronger regularization (wider margin, more violations allowed)",
+    "C has no effect on regularisation; only the kernel width controls the margin",
+    "C controls only the kernel shape, not the width or softness of the margin"
+  ],
+  top_073: [
+    "Accuracy requires both precision and recall, making it expensive to compute",
+    "A model that predicts only the majority class can achieve high accuracy while ignoring the minority class",
+    "Accuracy always overestimates model performance on any imbalanced dataset",
+    "Accuracy is undefined when the positive and negative class sizes differ at all"
+  ],
+  top_013: [
+    "A single split always leads to overfitting on the held-out validation set",
+    "The performance estimate has high variance depending on the random split",
+    "A single split requires significantly more memory than k-fold cross-validation",
+    "A holdout set cannot be used for hyperparameter tuning in any classifier"
+  ],
+  top_080: [
+    "The loss function drops below a pre-defined threshold across all samples",
+    "A model is found with enough inliers or the maximum number of iterations is reached",
+    "The residuals follow a normal distribution with zero mean across the dataset",
+    "The learning rate decays to zero after the scheduled number of training steps"
+  ],
+  top_012: [
+    "The test fold is larger than the training fold, reducing effective training size",
+    "Preprocessing (e.g., scaling) is fit on the entire dataset before splitting",
+    "The model has too many parameters relative to the available training samples",
+    "The learning rate is set too high, causing the model to memorise the test set"
+  ],
+  top_076: [
+    "The sum of absolute differences between each prediction and its true value",
+    "The sum of squared differences between predictions and true values",
+    "The maximum single-sample residual across all predictions in the training set",
+    "The mean of log-transformed residuals weighted by sample frequency"
+  ],
+  top_084: [
+    "The L2 norm of the vector difference between x and z in the input space",
+    "The inner product in the feature space of all degree-≤d polynomial combinations",
+    "A Gaussian radial similarity between x and z scaled by a bandwidth parameter",
+    "The cosine similarity between x and z after projection onto a unit sphere"
+  ],
+  top_047: [
+    "The importance values always sum to more than one when correlated features exist",
+    "Importance is split among correlated features, underestimating each individual feature",
+    "Correlated features each receive an importance score of exactly zero",
+    "The algorithm fails to converge when highly correlated features are present"
+  ],
+  top_014: [
+    "To parallelise model training across CPUs and reduce total fit time for large datasets",
+    "To chain preprocessing steps and a model so that CV is applied correctly without leakage",
+    "To automatically select the best algorithm and hyperparameters for the training data",
+    "To visualise the sequential decision boundary as each pipeline stage is applied"
+  ],
+  top_043: [
+    "The number of features randomly selected at each internal node during construction",
+    "The minimum number of samples required to be present at a leaf node to split",
+    "The maximum number of levels the tree can grow, controlling model complexity",
+    "The learning rate applied to each successive split to shrink tree contributions"
+  ],
+  top_082: [
+    "The angle-based similarity between vectors x and z in the original input space",
+    "A similarity that decreases exponentially with squared Euclidean distance",
+    "The dot product of x and z computed after projection onto a unit hypersphere",
+    "The Manhattan distance between x and z scaled by the bandwidth parameter γ"
+  ],
+  top_056: [
+    "The original target labels unchanged from the previous iteration of boosting",
+    "The pseudo-residuals (negative gradients of the loss function)",
+    "The predictions of the immediately preceding tree in the boosting sequence",
+    "A randomly sampled subset of target labels resampled with replacement each round"
+  ],
+  top_090: [
+    "It reduces the total number of features used during each gradient update step",
+    "It makes the loss surface more isotropic, enabling more uniform gradient steps",
+    "It eliminates the need to tune a learning rate by normalising gradient magnitude",
+    "It removes the effect of outliers by clipping extreme feature values before training"
+  ],
+  top_098: [
+    "All training points contribute equally through the weighted kernel sum",
+    "Only the support vectors (points on or inside the margin)",
+    "Only the correctly classified training points that lie outside the margin boundary",
+    "The training points that are farthest from the decision boundary in feature space"
+  ],
+  top_062: [
+    "It always causes the algorithm to diverge before reaching a stable partition",
+    "It can lead to poor clustering solutions depending on initial centroid positions",
+    "It requires the exact number of clusters to be specified as part of initialisation",
+    "It restricts the algorithm to only two-dimensional input spaces during clustering"
+  ],
+  top_008: [
+    "Its diagonal entries must all be zero to ensure numerical stability of the solver",
+    "It must be symmetric and positive semi-definite",
+    "All its entries must be strictly positive to represent valid inner products",
+    "Its trace must equal the total variance of the original feature space"
+  ],
+  top_004: [
+    "Reduce the number of support vectors needed to define the decision boundary",
+    "Compute dot products in a high-dimensional feature space without explicit feature mapping",
+    "Compute explicit feature maps to higher-dimensional space more efficiently than brute force",
+    "Eliminate the need for the C regularisation parameter when using nonlinear kernels"
+  ],
+  top_037: [
+    "It was the first architecture to incorporate multiple hidden layers for deep learning",
+    "It minimizes a differentiable continuous loss using gradient descent",
+    "It applies the backpropagation algorithm to propagate output errors through layers",
+    "It introduced the rectified linear unit (ReLU) as a non-saturating activation function"
+  ],
+  top_089: [
+    "Color (red, blue, green) — three distinct nominal categories with no natural ordering",
+    "City of residence (London, Paris, Tokyo) — nominal categories without meaningful order",
+    "Education level (high school < bachelor < master < PhD)",
+    "Customer income in dollars — a continuous ratio scale with an absolute zero point"
+  ],
+  top_088: [
+    "Integer encoding cannot be processed by most gradient-based ML optimisers",
+    "It implies an ordinal relationship (red < blue < green) that does not exist",
+    "Integer encoding always introduces perfect multicollinearity between encoded columns",
+    "Integer encoding doubles the memory requirements compared to one-hot encoding"
+  ],
+  top_058: [
+    "The L2 regularisation strength applied to all leaf weight values in each tree",
+    "The minimum loss reduction required to make a further partition",
+    "The fraction of features randomly sampled at each node during tree construction",
+    "The maximum learning rate allowed for the shrinkage of each individual tree"
+  ],
+  top_057: [
+    "It controls the maximum depth allowed for each individual tree in the sequence",
+    "It scales the contribution of each new tree, regularizing the ensemble",
+    "It determines the total number of boosting rounds to run before early stopping",
+    "It sets the fraction of training samples randomly selected for each new tree"
+  ],
+  top_015: [
+    "Transpose the feature matrix to switch rows and columns before model training",
+    "Apply different transformations to different subsets of columns",
+    "Automatically remove highly correlated feature pairs from the training dataset",
+    "Convert all features to the same numeric data type before applying a scaler"
+  ],
+  top_027: [
+    "One dominant principal component captures all the remaining variance in the data",
+    "The data lies on a lower-dimensional subspace, making reduction trivial",
+    "All directions have equal variance; PCA finds no preferred direction",
+    "The data is perfectly linearly separable along the first principal component"
+  ],
+  top_099: [
+    "Fewer trees, since each tree makes smaller corrections and converges more quickly",
+    "More trees (higher n_estimators) to achieve comparable performance",
+    "Deeper individual trees to compensate for the reduced per-iteration step size",
+    "A larger gamma regularisation value to prevent underfitting from small steps"
+  ]
+};
+
+// Apply distractor fixes to the ALL_QUESTIONS array
+function applyDistractorFixes(questions) {
+  return questions.map(q => {
+    if (!DISTRACTOR_FIXES[q.id]) return q;
+    return { ...q, options: DISTRACTOR_FIXES[q.id], optionExplanations: null };
+  });
+}
 
 // ===== STATE =====
 const STORAGE_KEY = 'dat200_exam_v1';

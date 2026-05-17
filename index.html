@@ -12614,6 +12614,18 @@ function shuffle(arr) {
   }
   return a;
 }
+// Eksamenspakke: balanserte eksamener à 20 spørsmål
+// Kilde: Top 100 + Sammenligning T/F + Formelquiz + alle ordering/match/symbol fra QUESTIONS
+const EKSAMENSPAKKE_EXAMS = (() => {
+  const specialTypes = QUESTIONS.filter(q => ['order','match','formula_match','symbol'].includes(q.type));
+  const N = 11;
+  const exams = Array.from({length: N}, () => []);
+  [TOP100_QUESTIONS, COMPARISON_TF_QUESTIONS, FORMULA_QUIZ_QUESTIONS, specialTypes].forEach(pool => {
+    pool.forEach((q, i) => exams[i % N].push(q));
+  });
+  return exams.map(e => shuffle(e).slice(0, 20));
+})();
+
 function chaptersOf() {
   const map = new Map();
   for (const q of QUESTIONS) {
@@ -12826,6 +12838,20 @@ function renderHome() {
   list.appendChild(mixedCard);
 
   wrap.appendChild(list);
+
+  // ---- FOLDER: Eksamenspakke ----
+  const epFolder = el('div', { class: 'folder-section' });
+  const epHeader = el('button', { class: 'folder-header' });
+  epHeader.innerHTML = `${state.lang === 'no' ? 'Eksamenspakke — 11 eksamener' : 'Exam Pack — 11 exams'} <em class="folder-chevron">▾</em>`;
+  const epContent = el('div', { class: 'folder-content' });
+  EKSAMENSPAKKE_EXAMS.forEach((exam, i) => {
+    epContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(exam) },
+      state.lang === 'no' ? `Eksamen ${i + 1} — ${exam.length} spørsmål` : `Exam ${i + 1} — ${exam.length} questions`));
+  });
+  epHeader.onclick = () => { epHeader.classList.toggle('open'); epContent.classList.toggle('open'); };
+  epFolder.appendChild(epHeader);
+  epFolder.appendChild(epContent);
+  wrap.appendChild(epFolder);
 
   // ---- FOLDER: Comparison True/False ----
   const cmpTfFolder = el('div', { class: 'folder-section' });

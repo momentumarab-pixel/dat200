@@ -12873,29 +12873,24 @@ function renderExam() {
 
   // actions
   if (!answered) {
-    const submitSec = el('div', { class: 'submit-section' });
-    submitSec.appendChild(el('div', { class: 'submit-section-title' }, state.lang === 'no' ? 'Lever svar' : 'Submit answer'));
-    submitSec.appendChild(el('div', { class: 'submit-section-hint' }, state.lang === 'no' ? 'Velg eit svar ovenfor, deretter trykk kor sikker du er' : 'Select an answer above, then tap your confidence level'));
-    const confDefs = [
-      { key: 'guess',   label: t('conf_guess'),   cls: 'conf-guess'   },
-      { key: 'unsure',  label: t('conf_unsure'),  cls: 'conf-unsure'  },
-      { key: 'sure',    label: t('conf_sure'),    cls: 'conf-sure'    },
-      { key: 'certain', label: t('conf_certain'), cls: 'conf-certain' },
-    ];
-    const confRow = el('div', { class: 'confidence-row' });
-    confDefs.forEach(({ key, label, cls }) => {
-      const btn = el('button', { class: `conf-btn ${cls}`, onclick: () => submitAnswer(q, answerUi.getValue, answerUi.canSubmit, key) });
-      btn.appendChild(el('span', { class: 'conf-num' }, key === 'guess' ? '1' : key === 'unsure' ? '2' : key === 'sure' ? '3' : '4'));
-      btn.appendChild(el('span', {}, label));
-      confRow.appendChild(btn);
-    });
-    submitSec.appendChild(confRow);
-    wrap.appendChild(submitSec);
-    wrap.appendChild(el('div', { class: 'kb-bar', style: 'margin-top:10px;' }, el('kbd', {}, '1'), '–', el('kbd', {}, '4'), ' ', t('kb_select')));
+    const submitRow = el('div', { style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
+    const submitBtn = el('button', {
+      class: 'btn btn-primary',
+      style: 'flex:1;min-height:52px;font-size:16px;font-weight:700;opacity:0.4;pointer-events:none;',
+      id: 'submit-btn',
+      onclick: () => submitAnswer(q, answerUi.getValue, answerUi.canSubmit, null)
+    }, state.lang === 'no' ? 'Lever svar' : 'Submit');
+    submitRow.appendChild(submitBtn);
+    wrap.appendChild(submitRow);
 
     const mobileNav = el('div', { class: 'mobile-bottom-nav' });
     mobileNav.appendChild(el('button', { disabled: state.index === 0, onclick: () => { state.index--; render(); } }, t('prev')));
-    mobileNav.appendChild(el('button', { onclick: () => goHome() }, t('cancel')));
+    mobileNav.appendChild(el('button', {
+      id: 'submit-btn-mobile',
+      class: 'primary',
+      style: 'opacity:0.4;pointer-events:none;',
+      onclick: () => submitAnswer(q, answerUi.getValue, answerUi.canSubmit, null)
+    }, state.lang === 'no' ? 'Lever svar' : 'Submit'));
     wrap.appendChild(mobileNav);
 
   } else if (state.wiseflowMode) {
@@ -12911,25 +12906,14 @@ function renderExam() {
     wrap.appendChild(mobileNavWf);
 
   } else {
-    // Anki rating — 0 / 5 / 10 / 15 spørsmål til neste gjentagelse
-    const ratingSec = el('div', { class: 'rating-section' });
-    ratingSec.appendChild(el('div', { class: 'rating-section-title' }, state.lang === 'no' ? 'Kom tilbake om … spørsmål' : 'Repeat in … questions'));
-    const ratings = [
-      { key: 'skip',  num: '0',  label: state.lang === 'no' ? 'Aldri' : 'Never',  cls: 'rating-skip'  },
-      { key: 'again', num: '5',  label: state.lang === 'no' ? 'Vanskelig' : 'Hard', cls: 'rating-again' },
-      { key: 'good',  num: '10', label: state.lang === 'no' ? 'OK' : 'OK',          cls: 'rating-good'  },
-      { key: 'easy',  num: '15', label: state.lang === 'no' ? 'Lett' : 'Easy',      cls: 'rating-easy'  },
-    ];
-    const ratingRow = el('div', { class: 'rating-row' });
-    ratings.forEach(({ key, num, label, cls }) => {
-      const btn = el('button', { class: `rating-btn ${cls}`, onclick: () => rateAndNext(key) });
-      btn.appendChild(el('span', { class: 'rating-num' }, num));
-      btn.appendChild(el('span', { class: 'rating-label' }, label));
-      ratingRow.appendChild(btn);
-    });
-    ratingSec.appendChild(ratingRow);
-    wrap.appendChild(ratingSec);
-    wrap.appendChild(el('div', { class: 'kb-bar', style: 'margin-top:8px;' }, el('kbd', {}, '1'), '–', el('kbd', {}, '4'), ' ', t('kb_rate')));
+    const nextRow = el('div', { style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
+    const isLast = state.index >= state.questions.length - 1;
+    nextRow.appendChild(el('button', {
+      class: 'btn btn-primary',
+      style: 'flex:1;min-height:52px;font-size:16px;font-weight:700;',
+      onclick: () => { rateAndNext('skip'); }
+    }, isLast ? (state.lang === 'no' ? 'Fullfør' : 'Finish') : t('next')));
+    wrap.appendChild(nextRow);
 
     const finDiv = el('div', { class: 'finish-link' });
     finDiv.appendChild(el('button', { class: 'btn btn-ghost', onclick: () => finishExam() }, t('finish_session', state.answers.filter(Boolean).length)));
@@ -12937,8 +12921,7 @@ function renderExam() {
 
     const mobileNavAfter = el('div', { class: 'mobile-bottom-nav' });
     mobileNavAfter.appendChild(el('button', { disabled: state.index === 0, onclick: () => { state.index--; render(); } }, t('prev')));
-    const canNext = state.index < state.questions.length - 1;
-    mobileNavAfter.appendChild(el('button', { class: canNext ? 'primary' : '', disabled: !canNext, onclick: () => { if (canNext) { state.index++; render(); } } }, canNext ? t('next') : (state.lang === 'no' ? 'Fullfør' : 'Finish')));
+    mobileNavAfter.appendChild(el('button', { class: 'primary', onclick: () => { rateAndNext('skip'); } }, isLast ? (state.lang === 'no' ? 'Fullfør' : 'Finish') : t('next')));
     wrap.appendChild(mobileNavAfter);
   }
 
@@ -13027,7 +13010,7 @@ function bodySingleChoice(q, answered) {
         if (answered) return;
         selected = origIdx;
         [...list.children].forEach((c, j) => c.classList.toggle('selected', order[j] === origIdx));
-        document.querySelector('.submit-section')?.classList.add('ready');
+        ['#submit-btn','#submit-btn-mobile'].forEach(id => { const b = document.querySelector(id); if(b){b.style.opacity='1';b.style.pointerEvents='all';} });
       }
     });
     btn.appendChild(el('span', { class: 'marker' }, String.fromCharCode(65 + displayPos)));
@@ -13063,7 +13046,7 @@ function bodyTrueFalse(q, answered) {
         if (answered) return;
         selected = v;
         [...list.children].forEach((c, j) => c.classList.toggle('selected', opts[j].v === v));
-        document.querySelector('.submit-section')?.classList.add('ready');
+        ['#submit-btn','#submit-btn-mobile'].forEach(id => { const b = document.querySelector(id); if(b){b.style.opacity='1';b.style.pointerEvents='all';} });
       }
     });
     btn.appendChild(el('span', { class: 'marker' }, v ? '✓' : '✗'));
@@ -13093,7 +13076,7 @@ function bodyMultiChoice(q, answered) {
         if (answered) return;
         if (selected.has(i)) selected.delete(i); else selected.add(i);
         list.children[i].classList.toggle('selected');
-        document.querySelector('.submit-section')?.classList.add('ready');
+        ['#submit-btn','#submit-btn-mobile'].forEach(id => { const b = document.querySelector(id); if(b){b.style.opacity='1';b.style.pointerEvents='all';} });
       }
     });
     btn.appendChild(el('span', { class: 'marker' }, selected.has(i) ? '✓' : ''));
@@ -13825,8 +13808,7 @@ document.addEventListener('keydown', (e) => {
       }
     }
   } else if (!state.wiseflowMode) {
-    const ratingKeys = ['skip', 'again', 'good', 'easy'];
-    if (num >= 1 && num <= 4) { rateAndNext(ratingKeys[num - 1]); e.preventDefault(); }
+    if (e.key === 'Enter' || e.key === 'ArrowRight') { rateAndNext('skip'); e.preventDefault(); }
   }
   if (e.key === 'ArrowLeft' && state.index > 0) {
     state.index--; render(); e.preventDefault();

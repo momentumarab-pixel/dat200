@@ -12217,7 +12217,27 @@ const FORMULA_QUIZ_QUESTIONS = [
   {id:'fq_035',chapter:'Formula Quiz',type:'single',question:'In AdaBoost weight update wᵢ := wᵢ · exp(−αⱼ·yᵢ·ŷᵢ), what happens to a misclassified sample\'s weight?',options:['Decreases — sample becomes less important','Stays the same','Increases — misclassified samples get more focus next round','Set to zero — removed'],answer:2,explanation:'When yᵢ ≠ ŷᵢ, yᵢ·ŷᵢ < 0, so exp(−αⱼ·yᵢ·ŷᵢ) > 1 — weight increases. The next classifier focuses harder on hard examples.'},
   {id:'fq_036',chapter:'Formula Quiz',type:'single',question:'What does S_W measure in LDA: S_W = Σᵢ Σₓ∈Cᵢ (x − μᵢ)(x − μᵢ)ᵀ?',options:['How spread class means are from the global mean','Total variance of the dataset','Spread of samples within each class around their class mean','Correlation between features within classes'],answer:2,explanation:'S_W is the within-class scatter. Small S_W means samples cluster tightly around their class centroid. LDA minimizes S_W while maximizing S_B.'},
   {id:'fq_037',chapter:'Formula Quiz',type:'single',question:'In the perceptron update wⱼ := wⱼ + η·(yᵢ − ŷᵢ)·xᵢⱼ, when does the update fire?',options:['Every training sample','Only correctly classified samples','Only when prediction ŷᵢ differs from true label yᵢ','Only when wⱼ is below a threshold'],answer:2,explanation:'When ŷᵢ = yᵢ, (yᵢ − ŷᵢ) = 0, no update. The perceptron only updates on errors. Adaline differs — it always updates using continuous output.'},
-  {id:'fq_038',chapter:'Formula Quiz',type:'single',question:'Why does the F1 score use harmonic mean instead of arithmetic mean?',options:['Harmonic mean is always larger','Harmonic mean penalizes imbalance — a low value in either metric strongly pulls F1 down','Arithmetic mean is undefined when P+R=1','Harmonic mean is faster to compute'],answer:1,explanation:'The harmonic mean is especially sensitive to small values. If Precision = 0 or Recall = 0, F1 = 0. This penalizes models that excel on one metric while failing the other.'}
+  {id:'fq_038',chapter:'Formula Quiz',type:'single',question:'Why does the F1 score use harmonic mean instead of arithmetic mean?',options:['Harmonic mean is always larger','Harmonic mean penalizes imbalance — a low value in either metric strongly pulls F1 down','Arithmetic mean is undefined when P+R=1','Harmonic mean is faster to compute'],answer:1,explanation:'The harmonic mean is especially sensitive to small values. If Precision = 0 or Recall = 0, F1 = 0. This penalizes models that excel on one metric while failing the other.'},
+  {id:'fq_039',chapter:'Formula Quiz',type:'single',question:'Nøyaktighet = (TP+TN)/(TP+TN+FP+FN). Når er nøyaktighet et misvisende mål?',options:['Når datasettet er perfekt balansert','Når det er mange egenskaper','Når klassene er ubalanserte — majoritetsklassen dominerer','Når man bruker kryss-validering'],answer:2,explanation:'Med 95 % negative prøver vil en modell som alltid predikerer "negativ" få 95 % nøyaktighet mens den er ubrukelig. Bruk presisjon, recall eller F1 i stedet.'},
+  {id:'fq_040',chapter:'Formula Quiz',type:'single',question:'F1 = 2·P·R / (P+R). Hva er F1 hvis Presisjon = 1.0 og Recall = 0.0?',options:['0.5','1.0','0.0','0.25'],answer:2,explanation:'F1 = 2·1·0/(1+0) = 0. Det harmoniske gjennomsnittet kollapser til null hvis en av komponentene er null — det straffer ekstrem ubalanse mellom presisjon og recall.'},
+  {id:'fq_041',chapter:'Formula Quiz',type:'single',question:'Spesifisitet = TN/(TN+FP). Hva betyr høy spesifisitet?',options:['Få faktiske positiver går glipp av','Få faktiske negativer merkes feilaktig som positive','Høy total nøyaktighet','Høy presisjon'],answer:1,explanation:'Spesifisitet måler hvor godt modellen identifiserer sanne negativer. Høy spesifisitet → få falske positiver. Viktig i screeningtester der falske alarmer er kostbare.'},
+  {id:'fq_042',chapter:'Formula Quiz',type:'single',question:'I ROC-kurven: hva betyr en modell med AUC = 0.5?',options:['Perfekt klassifikator','Klassifikator som presterer likt som tilfeldig gjetting','Klassifikator som alltid predikerer minoritetsklassen','Invertert perfekt klassifikator'],answer:1,explanation:'AUC = 0.5 betyr at ROC-kurven følger diagonalen — tilsvarer tilfeldig gjetting. AUC = 1.0 er perfekt. AUC < 0.5 betyr verre enn tilfeldig (vend prediksjonene).'},
+  {id:'fq_043',chapter:'Formula Quiz',type:'single',question:'Cosinuslikhet = (a·b)/(‖a‖·‖b‖). Når er cosinuslikhet = 1?',options:['Når vektorene er vinkelrette','Når a = b (samme retning, hvilken som helst størrelse)','Når ‖a‖ = ‖b‖ = 1','Kun når a og b er identiske enhetsvektorer'],answer:1,explanation:'cos(0°) = 1. Cosinuslikhet = 1 når vektorene peker i samme retning, uavhengig av størrelse. Skala-invariant — nyttig for tekst/TF-IDF.'},
+  {id:'fq_044',chapter:'Formula Quiz',type:'single',question:'Polynomisk kjerne κ(x,z) = (xᵀz+c)^d — hva kontrollerer graden d?',options:['Bredden på beslutningsgrensen','Kompleksiteten til beslutningsgrensen — høyere d tillater mer buede grenser','Antall støttevektorer','Regulariseringsstyrken'],answer:1,explanation:'Høyere d → mer komplekse beslutningsflater (flere interaksjoner mellom egenskaper). d=1 = lineær kjerne; d=2 = kvadratisk; stor d → overfitting-risiko.'},
+  {id:'fq_045',chapter:'Formula Quiz',type:'single',question:'I K-means: hvordan velges optimalt antall klynger K typisk?',options:['Alltid K = √(n/2) der n er antall prøver','Med albue-metoden — plott inertia vs K og finn knekk-punktet','Minimer K til minst mulig verdi','K settes alltid lik antall egenskaper'],answer:1,explanation:'Albue-metoden plotter within-cluster SSE (inertia) vs K. Inertia faller skarpt først, deretter flater det ut. "Albuen" er K der flere klynger gir avtagende gevinst.'},
+  {id:'fq_046',chapter:'Formula Quiz',type:'single',question:'Hva er silhuettskårens rekkevidde, og hva betyr en skår nær +1?',options:['Rekkevidde [0, ∞) — lavere er bedre','Rekkevidde [−1, +1] — nær +1 betyr prøven passer godt til sin klynge og dårlig til naboklynger','Rekkevidde [0, 1] — nær 1 betyr høy inertia','Ingen fast rekkevidde — avhenger av data'],answer:1,explanation:'Silhuett = (b−a)/max(a,b) der a = gjennomsnittlig intra-klynge-avstand, b = gjennomsnittlig nærmeste-klynge-avstand. Nær +1 → godt klynget. Nær 0 → grensetilfelle. Nær −1 → feilklassifisert.'},
+  {id:'fq_047',chapter:'Formula Quiz',type:'single',question:'I Random Forest: hva er "out-of-bag (OOB) feil"?',options:['Feil på hele treningssettet','Testfeil på et separat valideringssett','Valideringsfeil beregnet med ~37 % av prøvene som ikke ble valgt av hvert tres bootstrap-utvalg','Gjennomsnittlig kvadratfeil for ensemblet'],answer:2,explanation:'Bootstrap-sampling ekskluderer ~37 % av prøvene per tre (OOB-prøver). Hver prøve predikeres av trær som ikke trente på den — en gratis intern kryss-validering.'},
+  {id:'fq_048',chapter:'Formula Quiz',type:'single',question:'I Gradient Boosting: hvorfor foretrekkes liten læringsrate η med mange trær fremfor stor η med få trær?',options:['Liten η trener raskere','Liten η med flere trær gir vanligvis lavere generaliseringsfeil — regularisering via krymping','Stor η forhindrer overfitting','Liten η reduserer antall støttevektorer'],answer:1,explanation:'Hvert tre bidrar η·hₘ(x). Liten η betyr hvert steg er forsiktig. Kombinert med mange trær gir dette finere korreksjoner og typisk bedre generalisering (krympe-regularisering).'},
+  {id:'fq_049',chapter:'Formula Quiz',type:'single',question:'Hva måler "feature importance" i beslutningstrær / Random Forest?',options:['Korrelasjon mellom egenskap og mål','Hvor ofte egenskapen vises i treningsdata','Total reduksjon i urenhet (Gini/entropi) over alle splits med den egenskapen','Rangering av egenskap etter varians'],answer:2,explanation:'Egenskap-viktighet = sum av urenhetsreduksjon (vektet etter node-prøveantall) for alle splits på den egenskapen, gjennomsnittliggjort over trær i en skog. Høyere = mer nyttig for prediksjon.'},
+  {id:'fq_050',chapter:'Formula Quiz',type:'single',question:'Med k=5 kryss-validering: hvilken andel av data brukes til testing i hvert fold?',options:['1/3','1/5 (20 %)','4/5 (80 %)','Avhenger av datasett-størrelsen'],answer:1,explanation:'Med k=5 fold: hvert fold bruker 1/5 = 20 % til testing og 4/5 = 80 % til trening. Prosessen gjentas 5 ganger med ulike testfold, og resultater gjennomsnittes.'},
+  {id:'fq_051',chapter:'Formula Quiz',type:'single',question:'Hva sikrer stratifisert k-fold kryss-validering?',options:['Likt antall egenskaper i hvert fold','Hvert fold har omtrent samme klassefordeling som hele datasettet','Treningsfold er alltid større enn testfold','Egenskaper normaliseres innenfor hvert fold'],answer:1,explanation:'Stratifisering bevarer klasseandelene i hvert fold. Avgjørende for ubalanserte datasett — uten det kan noen fold inneholde svært få minoritetsklasse-prøver.'},
+  {id:'fq_052',chapter:'Formula Quiz',type:'single',question:'Hva er formålet med en Pipeline i scikit-learn?',options:['Å trene flere uavhengige modeller samtidig','Å koble forbehandlings- og modelleringstrinn slik at datatransformasjoner brukes konsekvent under kryss-validering','Å automatisk velge beste hyperparametre','Å parallelisere trening over CPU-kjerner'],answer:1,explanation:'En Pipeline bundler trinn (f.eks. StandardScaler → PCA → Klassifikator). Avgjørende: fit() på en Pipeline fitter kun på treningsdata — forhindrer datalekkasje fra transformasjoner under kryss-validering.'},
+  {id:'fq_053',chapter:'Formula Quiz',type:'single',question:'Hvorfor bør StandardScaler kun fittes på treningsdata (ikke hele datasettet) under kryss-validering?',options:['Fordi testdata kan ha andre egenskaper','For å forhindre datalekkasje — teststatistikk må ikke påvirke forbehandling av treningsfold','Fordi skalering ikke trengs på testdata','Det er alltid trygt å fitte på hele datasettet'],answer:1,explanation:'Å fitte skaleren på alle data (inkludert testfoldet) lekker informasjon. Gjennomsnitt/std beregnet inkluderer testprøver, noe som gir modellen indirekte kunnskap om testsettet.'},
+  {id:'fq_054',chapter:'Formula Quiz',type:'single',question:'I perseptronkonvergensteoret: hvilken betingelse må holde for at algoritmen skal konvergere?',options:['Læringsraten må være < 0.01','Dataene må være lineært separerbare','Antall egenskaper må være større enn antall prøver','Tapet må være konvekst'],answer:1,explanation:'Perseptronen er garantert å konvergere kun hvis dataene er lineært separerbare. Hvis ikke, sykler den for alltid. Logistisk regresjon / SVM håndterer ikke-separerbare data bedre.'},
+  {id:'fq_055',chapter:'Formula Quiz',type:'single',question:'Hva er hovedforskjellen mellom Gini-urenhet og entropi som splittingskriterier i beslutningstrær?',options:['Gini bruker log; entropi bruker kvadrater','Entropi produserer alltid dypere trær','De gir ofte lignende resultater, men entropi er litt mer beregningsmessig kostbar pga. logaritmen','Gini brukes kun for regresjon; entropi for klassifikasjon'],answer:2,explanation:'Begge måler node-urenhet og produserer vanligvis lignende trær. Entropi krever beregning av log₂, noe som gjør det litt tregere. I praksis er valget sjelden avgjørende.'},
+  {id:'fq_056',chapter:'Formula Quiz',type:'single',question:'I Boosting: hva betyr det at en "svak lærer" har høy bias og lav varians?',options:['Den er kompleks og memorerer treningsdata','Den er for enkel til å fange mønstre alene, men kan kombineres til en sterk ensemble','Den har perfekt treningsnøyaktighet','Den trenger ingen hyperparametre'],answer:1,explanation:'En svak lærer (f.eks. et stump med dybde 1) passer dårlig alene (høy bias). Boosting korrigerer denne bias iterativt, og lave variansen betyr at hvert tre er stabilt og ikke memorerer støy.'},
+  {id:'fq_057',chapter:'Formula Quiz',type:'single',question:'Hva er forskjellen mellom "hard voting" og "soft voting" i ensemble-klassifikatorer?',options:['Hard voting bruker sannsynligheter; soft voting bruker klasseetiketter','Soft voting bruker sannsynligheter; hard voting bruker flertalls-klassevotering','De er identiske bortsett fra antall estimatorer','Hard voting brukes for regresjon; soft for klassifikasjon'],answer:1,explanation:'Hard voting: hver klassifikator stemmer for en klasse; flertall vinner. Soft voting: gjennomsnittlig de predikerte sannsynlighetene, velg deretter klassen med høyest gjennomsnitt. Soft voting er vanligvis mer nøyaktig.'},
+  {id:'fq_058',chapter:'Formula Quiz',type:'single',question:'I OLS: w = (XᵀX)⁻¹·Xᵀy — hva gjør Ridge-regresjon annerledes?',options:['Erstatter Xᵀ med X','Legger til λI på diagonalen: w = (XᵀX + λI)⁻¹·Xᵀy, noe som gjør matrisen inverterbar','Fjerner features med lav varians','Bruker L1-straff i stedet for invertering'],answer:1,explanation:'Ridge legger til λI for å sikre at XᵀX + λI alltid er inverterbar (selv ved multikollinearitet). Det krymper også vektene mot null, noe som reduserer varians og overfitting.'}
 ];
 
 // ===== COMPARISON TRUE/FALSE QUESTIONS =====
@@ -12355,6 +12375,71 @@ const COMPARISON_TF_QUESTIONS = [
   { id:'ctf_040', type:'true_false', chapter:'Classification Algorithms', answer:true,
     question:'For binary classification, Sigmoid and Softmax produce equivalent results.',
     explanation:'With two classes, Softmax reduces to the Sigmoid function. The probability of class 1 is e^(z₁)/(e^(z₁)+e^(z₂)) = 1/(1+e^(z₂−z₁)) = σ(z).' },
+  // Logistisk vs Lineær regresjon (5)
+  { id:'ctf_041', type:'true_false', chapter:'Regression', answer:true,
+    question:'Logistisk regresjon gir en sannsynlighet i (0, 1), mens lineær regresjon gir et ubegrenset reelt tall.',
+    explanation:'Sigmoid-funksjonen squasher output til (0,1). Lineær regresjon: ŷ = wᵀx + b er ubegrenset.' },
+  { id:'ctf_042', type:'true_false', chapter:'Regression', answer:false,
+    question:'Både logistisk regresjon og lineær regresjon bruker MSE (mean squared error) som tapsfunksjon.',
+    explanation:'Lineær regresjon minimerer MSE. Logistisk regresjon minimerer kryss-entropitap — MSE gir ikke-konvekse overflater med sigmoid-output.' },
+  { id:'ctf_043', type:'true_false', chapter:'Regression', answer:false,
+    question:'Logistisk regresjon har en lukket-form (analytisk) løsning, på lik linje med lineær regresjon.',
+    explanation:'Lineær regresjon har normalligningen w = (XᵀX)⁻¹Xᵀy. Logistisk regresjon har ingen lukket form — krever iterativ optimering (gradientnedstigning).' },
+  { id:'ctf_044', type:'true_false', chapter:'Regression', answer:true,
+    question:'Logistisk regresjon modellerer log-oddsene log(p/(1−p)) som en lineær funksjon av inndataene.',
+    explanation:'Logit = wᵀx + b er lineær. Sigmoid konverterer dette tilbake til sannsynlighet. Dette er kjerneantakelsen i logistisk regresjon.' },
+  { id:'ctf_045', type:'true_false', chapter:'Regression', answer:true,
+    question:'Lineær regresjon kan brukes til binær klassifikasjon ved å sette terskel ved 0.5, men anbefales generelt ikke.',
+    explanation:'Teknisk mulig, men lineær regresjon er ikke begrenset til [0,1], gir dårlige sannsynlighetsestimater og er sensitiv for uteliggere. Logistisk regresjon foretrekkes.' },
+  // Random Forest vs Gradient Boosting (5)
+  { id:'ctf_046', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'Random Forest trener trærne parallelt (uavhengig), mens Gradient Boosting trener dem sekvensielt (hvert tre korrigerer det forrige).',
+    explanation:'Random Forest: alle trær trenes uavhengig på bootstrap-utvalg → parallelt. Gradient Boosting: hvert tre tilpasses residualene til det nåværende ensemblet → sekvensielt.' },
+  { id:'ctf_047', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'Random Forest reduserer varians ved å gjennomsnittsberegne mange ukorrelerte trær, mens Gradient Boosting primært reduserer bias.',
+    explanation:'Bagging (Random Forest) angriper varians. Boosting angriper bias ved iterativt å redusere residualfeilen. Begge kan redusere begge, men dette er hovedmekanismene.' },
+  { id:'ctf_048', type:'true_false', chapter:'Ensembles', answer:false,
+    question:'Gradient Boosting er generelt mindre sensitiv for hyperparametre og mindre utsatt for overfitting enn Random Forest.',
+    explanation:'Gradient Boosting er mer sensitiv for hyperparametre (læringsrate, n_estimators, max_depth) og kan overfit lettere. Random Forest er mer robust uten tuning.' },
+  { id:'ctf_049', type:'true_false', chapter:'Ensembles', answer:true,
+    question:'Begge Random Forest og Gradient Boosting er trebaserte ensemble-metoder, men kombinerer trær på forskjellige måter.',
+    explanation:'Random Forest: gjennomsnitt (eller flertallsvotering) av uavhengig trente trær. Gradient Boosting: additiv modell der hvert tre tilpasses residualene til det nåværende ensemblet.' },
+  { id:'ctf_050', type:'true_false', chapter:'Ensembles', answer:false,
+    question:'Random Forest bruker hele treningsdatasettet for hvert tre, akkurat som et enkelt beslutningstre.',
+    explanation:'Random Forest bruker bootstrap-sampling — hvert tre ser et tilfeldig utvalg av prøver (med tilbakelegging). I tillegg vurderes kun et tilfeldig utvalg av egenskaper ved hvert split.' },
+  // Hard margin vs Soft margin SVM (4)
+  { id:'ctf_051', type:'true_false', chapter:'SVM', answer:true,
+    question:'Hard-margin SVM krever at treningsdataene er perfekt lineært separerbare.',
+    explanation:'Hard-margin SVM finner et hyperplan med null treningsfeil. Hvis dataene ikke er lineært separerbare, finnes ingen gyldig løsning. Soft-margin SVM løser dette med slack-variabler.' },
+  { id:'ctf_052', type:'true_false', chapter:'SVM', answer:true,
+    question:'I soft-margin SVM fører en større C-verdi til en smalere margin men færre treningsfeil.',
+    explanation:'Stor C straffer misklassifikasjoner hardt → modellen prøver hardt å klassifisere alt riktig → smal margin. Liten C tillater flere brudd → bredere margin.' },
+  { id:'ctf_053', type:'true_false', chapter:'SVM', answer:false,
+    question:'Å sette C → ∞ i soft-margin SVM er ekvivalent med å sette C → 0.',
+    explanation:'C → ∞ nærmer seg hard-margin SVM (null toleranse for misklassifikasjon). C → 0 tillater maksimale brudd. De er motsetninger.' },
+  { id:'ctf_054', type:'true_false', chapter:'SVM', answer:true,
+    question:'Soft-margin SVM introduserer slack-variabler ξᵢ ≥ 0 for å la noen prøver bryte margingrensen.',
+    explanation:'ξᵢ = 0: korrekt utenfor margin. 0 < ξᵢ ≤ 1: innenfor margin men riktig side. ξᵢ > 1: misklassifisert. Målet straffer total slack C·Σξᵢ.' },
+  // Presisjon vs Recall (3)
+  { id:'ctf_055', type:'true_false', chapter:'Evaluation Metrics', answer:false,
+    question:'Presisjon måler hvilken andel av faktiske positiver modellen korrekt identifiserer.',
+    explanation:'Det er Recall = TP/(TP+FN). Presisjon = TP/(TP+FP) — av alle predikerte positiver, hvor mange er faktisk positive. Høy presisjon → få falske alarmer.' },
+  { id:'ctf_056', type:'true_false', chapter:'Evaluation Metrics', answer:true,
+    question:'Høy recall betyr at modellen går glipp av få faktiske positiver (lav falsk-negativ-rate).',
+    explanation:'Recall = TP/(TP+FN). Høy recall → FN er liten → modellen finner de fleste faktiske positiver. Kritisk i medisinsk diagnose der det å misse en sykdom er kostbart.' },
+  { id:'ctf_057', type:'true_false', chapter:'Evaluation Metrics', answer:false,
+    question:'F1-scoren er det aritmetiske gjennomsnittet av presisjon og recall.',
+    explanation:'F1 = 2·P·R/(P+R) — dette er det harmoniske gjennomsnittet, ikke det aritmetiske. Det harmoniske gjennomsnittet straffer ubalanse hardere: hvis P eller R ≈ 0, så F1 ≈ 0.' },
+  // Overfitting vs Underfitting (3)
+  { id:'ctf_058', type:'true_false', chapter:'Bias-Variance & Regularization', answer:true,
+    question:'En overfit modell har typisk høy treningsnøyaktighet men mye lavere testnøyaktighet.',
+    explanation:'Overfitting = memorering av treningsdata inkludert støy. Treningsfeil ≈ 0 men testfeil er høy. Dette er kjennetegnet på høy varians.' },
+  { id:'ctf_059', type:'true_false', chapter:'Bias-Variance & Regularization', answer:false,
+    question:'Underfitting er forårsaket av en modell som er for kompleks relativt til treningsdataene.',
+    explanation:'Underfitting (høy bias) er forårsaket av en modell som er for enkel — den klarer ikke å fange det sanne underliggende mønsteret. For kompleks → overfitting.' },
+  { id:'ctf_060', type:'true_false', chapter:'Bias-Variance & Regularization', answer:true,
+    question:'Å øke regulariseringsstyrken (f.eks. større λ) reduserer generelt overfitting.',
+    explanation:'Regularisering straffer store vekter, reduserer modellkompleksitet og varians. For mye regularisering fører imidlertid til underfitting.' },
 ];
 
 // ===== DISTRACTOR FIXES (balanced length + 1 near-correct per question) =====
@@ -12618,7 +12703,7 @@ function shuffle(arr) {
 // Kilde: Top 100 + Sammenligning T/F + Formelquiz + alle ordering/match/symbol fra QUESTIONS
 const EKSAMENSPAKKE_EXAMS = (() => {
   const specialTypes = QUESTIONS.filter(q => ['order','match','formula_match','symbol'].includes(q.type));
-  const N = 11;
+  const N = 13;
   const exams = Array.from({length: N}, () => []);
   [TOP100_QUESTIONS, COMPARISON_TF_QUESTIONS, FORMULA_QUIZ_QUESTIONS, specialTypes].forEach(pool => {
     pool.forEach((q, i) => exams[i % N].push(q));
@@ -12842,7 +12927,7 @@ function renderHome() {
   // ---- FOLDER: Eksamenspakke ----
   const epFolder = el('div', { class: 'folder-section' });
   const epHeader = el('button', { class: 'folder-header' });
-  epHeader.innerHTML = `${state.lang === 'no' ? 'Eksamenspakke — 11 eksamener' : 'Exam Pack — 11 exams'} <em class="folder-chevron">▾</em>`;
+  epHeader.innerHTML = `${state.lang === 'no' ? `Eksamenspakke — ${EKSAMENSPAKKE_EXAMS.length} eksamener` : `Exam Pack — ${EKSAMENSPAKKE_EXAMS.length} exams`} <em class="folder-chevron">▾</em>`;
   const epContent = el('div', { class: 'folder-content' });
   EKSAMENSPAKKE_EXAMS.forEach((exam, i) => {
     epContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(exam) },
@@ -12866,6 +12951,11 @@ function renderHome() {
     { label: state.lang === 'no' ? 'K-Means vs Hierarkisk (5 spørsmål)' : 'K-Means vs Hierarchical (5 questions)', ids: ['ctf_028','ctf_029','ctf_030','ctf_031','ctf_032'] },
     { label: state.lang === 'no' ? 'Bias vs Varians (5 spørsmål)' : 'Bias vs Variance (5 questions)', ids: ['ctf_033','ctf_034','ctf_035','ctf_036','ctf_037'] },
     { label: state.lang === 'no' ? 'Softmax vs Sigmoid (3 spørsmål)' : 'Softmax vs Sigmoid (3 questions)', ids: ['ctf_038','ctf_039','ctf_040'] },
+    { label: state.lang === 'no' ? 'Logistisk vs Lineær regresjon (5 spørsmål)' : 'Logistic vs Linear Regression (5 questions)', ids: ['ctf_041','ctf_042','ctf_043','ctf_044','ctf_045'] },
+    { label: state.lang === 'no' ? 'Random Forest vs Gradient Boosting (5 spørsmål)' : 'Random Forest vs Gradient Boosting (5 questions)', ids: ['ctf_046','ctf_047','ctf_048','ctf_049','ctf_050'] },
+    { label: state.lang === 'no' ? 'Hard margin vs Soft margin SVM (4 spørsmål)' : 'Hard margin vs Soft margin SVM (4 questions)', ids: ['ctf_051','ctf_052','ctf_053','ctf_054'] },
+    { label: state.lang === 'no' ? 'Presisjon vs Recall (3 spørsmål)' : 'Precision vs Recall (3 questions)', ids: ['ctf_055','ctf_056','ctf_057'] },
+    { label: state.lang === 'no' ? 'Overfitting vs Underfitting (3 spørsmål)' : 'Overfitting vs Underfitting (3 questions)', ids: ['ctf_058','ctf_059','ctf_060'] },
   ];
   cmpTfContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(COMPARISON_TF_QUESTIONS) }, state.lang === 'no' ? `Alle sammenligninger (${COMPARISON_TF_QUESTIONS.length} spørsmål)` : `All comparisons (${COMPARISON_TF_QUESTIONS.length} questions)`));
   cmpTopics.forEach(({ label, ids }) => {

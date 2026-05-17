@@ -12731,6 +12731,7 @@ function formatTime(s) {
 // ===== RENDER ROUTER =====
 function render() {
   const main = $('#main');
+  try {
   main.innerHTML = '';
   renderTopbar();
   if (state.view === 'home') main.appendChild(renderHome());
@@ -12739,6 +12740,15 @@ function render() {
   else if (state.view === 'formulas') main.appendChild(renderFormulaSheetView());
   else if (state.view === 'comparison') main.appendChild(renderComparisonView());
   else if (state.view === 'progress') main.appendChild(renderProgressView());
+  } catch (err) {
+    console.error('render() crashed:', err);
+    main.innerHTML = '';
+    const errBox = document.createElement('div');
+    errBox.style.cssText = 'padding:32px;text-align:center;color:#dc2626;';
+    errBox.innerHTML = `<h2>Something went wrong</h2><p style="font-size:13px;opacity:.7">${err.message}</p>
+      <button onclick="goHome()" style="margin-top:16px;padding:10px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Go Home</button>`;
+    main.appendChild(errBox);
+  }
 }
 
 function renderTopbar() {
@@ -13675,7 +13685,6 @@ function renderCorrectAnswer(q) {
       text = `Correct answer: ${q.answer ? 'True' : 'False'}`;
       break;
     case 'single':
-    case 'formula_match':
     case 'symbol':
     case 'plot':
     case 'figure':

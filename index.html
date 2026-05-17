@@ -13453,6 +13453,12 @@ function bodyOrder(q, answered) {
     });
   }
   redraw();
+  setTimeout(() => {
+    ['#submit-btn','#submit-btn-mobile'].forEach(id => {
+      const b = document.querySelector(id);
+      if (b) { b.style.opacity = '1'; b.style.pointerEvents = 'all'; }
+    });
+  }, 0);
   return {
     node: wrap,
     getValue: () => order.slice(),
@@ -13483,6 +13489,11 @@ function bodyMatch(q, answered) {
   function redraw() {
     leftList.innerHTML = '';
     rightList.innerHTML = '';
+    const allPaired = pairs.every(p => p !== null);
+    ['#submit-btn','#submit-btn-mobile'].forEach(id => {
+      const b = document.querySelector(id);
+      if (b) { b.style.opacity = allPaired ? '1' : '0.4'; b.style.pointerEvents = allPaired ? 'all' : 'none'; }
+    });
     q.left.forEach((txt, li) => {
       const item = el('div', { class: 'match-item' });
       if (pairs[li] !== null) {
@@ -13560,6 +13571,15 @@ function bodyFillBlank(q, answered) {
   });
   if (answered) input.value = answered.given;
   if (answered) input.setAttribute('disabled', '');
+  if (!answered) {
+    input.addEventListener('input', () => {
+      const has = input.value.trim().length > 0;
+      ['#submit-btn','#submit-btn-mobile'].forEach(id => {
+        const b = document.querySelector(id);
+        if (b) { b.style.opacity = has ? '1' : '0.4'; b.style.pointerEvents = has ? 'all' : 'none'; }
+      });
+    });
+  }
   wrap.appendChild(input);
   setTimeout(() => { if (!answered) input.focus(); }, 50);
   return {

@@ -12005,28 +12005,6 @@
 <script>
 'use strict';
 
-// ===== LAST INN SPØRSMÅL =====
-const ALL_QUESTIONS = applyDistractorFixes(JSON.parse(document.getElementById('question-bank').textContent));
-const CANVAS_QUESTIONS = ALL_QUESTIONS.filter(q => q.id.startsWith('orig_'));
-const TOP100_QUESTIONS = ALL_QUESTIONS.filter(q => q.id.startsWith('top_'));
-const QUESTIONS = ALL_QUESTIONS.filter(q => !q.id.startsWith('orig_') && !q.id.startsWith('top_'));
-// Quick 30: 2-3 per major topic for balanced fast review
-const QUICK30_QUESTIONS = (() => {
-  const topics = [
-    'SVM','Cross-validation & Pipelines','Bias-Variance & Regularization',
-    'PCA & LDA','Logistic Regression & Perceptron','Decision Trees',
-    'Random Forest & Ensemble','AdaBoost','Gradient Boosting & XGBoost',
-    'K-means & Clustering','Evaluation Metrics','Linear Regression & RANSAC',
-    'Kernels','Preprocessing'
-  ];
-  const result = [];
-  topics.forEach(t => {
-    const qs = TOP100_QUESTIONS.filter(q => q.chapter === t);
-    result.push(...qs.slice(0, t === 'Evaluation Metrics' || t === 'SVM' || t === 'Bias-Variance & Regularization' ? 3 : 2));
-  });
-  return result.slice(0, 30);
-})();
-
 // ===== TRANSLATIONS =====
 const LABELS = {
   en: {
@@ -12160,23 +12138,6 @@ function t(key,...args){const d=LABELS[state&&state.lang?state.lang:'en'];const 
 function toggleLang(){state.lang=state.lang==='en'?'no':'en';render();}
 function toggleDark(){state.history.dark=!state.history.dark;document.documentElement.classList.toggle('dark',state.history.dark);saveHistory();renderTopbar();}
 function toggleBookmark(qId){if(!state.history.bookmarks)state.history.bookmarks=[];const idx=state.history.bookmarks.indexOf(qId);if(idx!==-1)state.history.bookmarks.splice(idx,1);else state.history.bookmarks.push(qId);saveHistory();render();}
-
-// Mixed exam: all question types except code reading, plot interpretation, figure analysis
-const MIXED_QUESTIONS = QUESTIONS.filter(q => !['code', 'plot', 'figure'].includes(q.type));
-
-// 5 practice exams: round-robin partition of TOP100 by chapter (each exam ~20q, same topics)
-const PRACTICE_EXAMS = (() => {
-  const byChapter = {};
-  TOP100_QUESTIONS.forEach(q => {
-    if (!byChapter[q.chapter]) byChapter[q.chapter] = [];
-    byChapter[q.chapter].push(q);
-  });
-  const exams = [[], [], [], [], []];
-  Object.values(byChapter).forEach(chapterQs => {
-    chapterQs.forEach((q, i) => exams[i % 5].push(q));
-  });
-  return exams;
-})();
 
 // Formula quiz — tests knowledge of formula symbols and meanings
 const FORMULA_QUIZ_QUESTIONS = [
@@ -12634,6 +12595,48 @@ function applyDistractorFixes(questions) {
     return { ...q, options: DISTRACTOR_FIXES[q.id], optionExplanations: null };
   });
 }
+
+
+// ===== LAST INN SPØRSMÅL =====
+const ALL_QUESTIONS = applyDistractorFixes(JSON.parse(document.getElementById('question-bank').textContent));
+const CANVAS_QUESTIONS = ALL_QUESTIONS.filter(q => q.id.startsWith('orig_'));
+const TOP100_QUESTIONS = ALL_QUESTIONS.filter(q => q.id.startsWith('top_'));
+const QUESTIONS = ALL_QUESTIONS.filter(q => !q.id.startsWith('orig_') && !q.id.startsWith('top_'));
+// Quick 30: 2-3 per major topic for balanced fast review
+const QUICK30_QUESTIONS = (() => {
+  const topics = [
+    'SVM','Cross-validation & Pipelines','Bias-Variance & Regularization',
+    'PCA & LDA','Logistic Regression & Perceptron','Decision Trees',
+    'Random Forest & Ensemble','AdaBoost','Gradient Boosting & XGBoost',
+    'K-means & Clustering','Evaluation Metrics','Linear Regression & RANSAC',
+    'Kernels','Preprocessing'
+  ];
+  const result = [];
+  topics.forEach(t => {
+    const qs = TOP100_QUESTIONS.filter(q => q.chapter === t);
+    result.push(...qs.slice(0, t === 'Evaluation Metrics' || t === 'SVM' || t === 'Bias-Variance & Regularization' ? 3 : 2));
+  });
+  return result.slice(0, 30);
+})();
+
+
+// Mixed exam: all question types except code reading, plot interpretation, figure analysis
+const MIXED_QUESTIONS = QUESTIONS.filter(q => !['code', 'plot', 'figure'].includes(q.type));
+
+// 5 practice exams: round-robin partition of TOP100 by chapter (each exam ~20q, same topics)
+const PRACTICE_EXAMS = (() => {
+  const byChapter = {};
+  TOP100_QUESTIONS.forEach(q => {
+    if (!byChapter[q.chapter]) byChapter[q.chapter] = [];
+    byChapter[q.chapter].push(q);
+  });
+  const exams = [[], [], [], [], []];
+  Object.values(byChapter).forEach(chapterQs => {
+    chapterQs.forEach((q, i) => exams[i % 5].push(q));
+  });
+  return exams;
+})();
+
 
 // ===== STATE =====
 const STORAGE_KEY = 'dat200_exam_v1';

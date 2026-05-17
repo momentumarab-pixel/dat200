@@ -13185,6 +13185,15 @@ function renderExam() {
 
   // actions
   if (!answered) {
+    // Central submit-state helper — called by any answer UI when its state changes
+    function refreshSubmit() {
+      const ready = answerUi.canSubmit();
+      [document.querySelector('#submit-btn'), document.querySelector('#submit-btn-mobile')].forEach(b => {
+        if (b) { b.style.opacity = ready ? '1' : '0.4'; b.style.pointerEvents = ready ? 'all' : 'none'; }
+      });
+    }
+    state._refreshSubmit = refreshSubmit;
+
     const submitRow = el('div', { style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
     const submitBtn = el('button', {
       class: 'btn btn-primary',
@@ -13204,6 +13213,9 @@ function renderExam() {
       onclick: () => submitAnswer(q, answerUi.getValue, answerUi.canSubmit, null)
     }, state.lang === 'no' ? 'Lever svar' : 'Submit'));
     wrap.appendChild(mobileNav);
+
+    // Enable immediately if canSubmit is already true (e.g. order/process types)
+    setTimeout(refreshSubmit, 0);
 
   } else if (state.wiseflowMode) {
     const wfActions = el('div', { class: 'actions' });
@@ -13322,7 +13334,7 @@ function bodySingleChoice(q, answered) {
         if (answered) return;
         selected = origIdx;
         [...list.children].forEach((c, j) => c.classList.toggle('selected', order[j] === origIdx));
-        ['#submit-btn','#submit-btn-mobile'].forEach(id => { const b = document.querySelector(id); if(b){b.style.opacity='1';b.style.pointerEvents='all';} });
+        if (state._refreshSubmit) state._refreshSubmit();
       }
     });
     btn.appendChild(el('span', { class: 'marker' }, String.fromCharCode(65 + displayPos)));
@@ -13358,7 +13370,7 @@ function bodyTrueFalse(q, answered) {
         if (answered) return;
         selected = v;
         [...list.children].forEach((c, j) => c.classList.toggle('selected', opts[j].v === v));
-        ['#submit-btn','#submit-btn-mobile'].forEach(id => { const b = document.querySelector(id); if(b){b.style.opacity='1';b.style.pointerEvents='all';} });
+        if (state._refreshSubmit) state._refreshSubmit();
       }
     });
     btn.appendChild(el('span', { class: 'marker' }, v ? '✓' : '✗'));
@@ -13388,7 +13400,7 @@ function bodyMultiChoice(q, answered) {
         if (answered) return;
         if (selected.has(i)) selected.delete(i); else selected.add(i);
         list.children[i].classList.toggle('selected');
-        ['#submit-btn','#submit-btn-mobile'].forEach(id => { const b = document.querySelector(id); if(b){b.style.opacity='1';b.style.pointerEvents='all';} });
+        if (state._refreshSubmit) state._refreshSubmit();
       }
     });
     btn.appendChild(el('span', { class: 'marker' }, selected.has(i) ? '✓' : ''));
@@ -13453,12 +13465,6 @@ function bodyOrder(q, answered) {
     });
   }
   redraw();
-  setTimeout(() => {
-    ['#submit-btn','#submit-btn-mobile'].forEach(id => {
-      const b = document.querySelector(id);
-      if (b) { b.style.opacity = '1'; b.style.pointerEvents = 'all'; }
-    });
-  }, 0);
   return {
     node: wrap,
     getValue: () => order.slice(),
@@ -13489,11 +13495,7 @@ function bodyMatch(q, answered) {
   function redraw() {
     leftList.innerHTML = '';
     rightList.innerHTML = '';
-    const allPaired = pairs.every(p => p !== null);
-    ['#submit-btn','#submit-btn-mobile'].forEach(id => {
-      const b = document.querySelector(id);
-      if (b) { b.style.opacity = allPaired ? '1' : '0.4'; b.style.pointerEvents = allPaired ? 'all' : 'none'; }
-    });
+    if (state._refreshSubmit) state._refreshSubmit();
     q.left.forEach((txt, li) => {
       const item = el('div', { class: 'match-item' });
       if (pairs[li] !== null) {
@@ -13572,13 +13574,7 @@ function bodyFillBlank(q, answered) {
   if (answered) input.value = answered.given;
   if (answered) input.setAttribute('disabled', '');
   if (!answered) {
-    input.addEventListener('input', () => {
-      const has = input.value.trim().length > 0;
-      ['#submit-btn','#submit-btn-mobile'].forEach(id => {
-        const b = document.querySelector(id);
-        if (b) { b.style.opacity = has ? '1' : '0.4'; b.style.pointerEvents = has ? 'all' : 'none'; }
-      });
-    });
+    input.addEventListener('input', () => { if (state._refreshSubmit) state._refreshSubmit(); });
   }
   wrap.appendChild(input);
   setTimeout(() => { if (!answered) input.focus(); }, 50);

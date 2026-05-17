@@ -17966,42 +17966,6 @@ function renderHome() {
 
   const list = el('div', { class: 'chapter-list' });
 
-  const masterCard = el('button', { class: 'mode-card mc-slate', onclick: () => startExam(QUESTIONS) });
-  const masterCardBody = el('div', { class: 'mc-body' });
-  masterCardBody.appendChild(el('div', { class: 'mc-count' }, `${QUESTIONS.length} ${t('stat_questions').toLowerCase()}`));
-  masterCardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_bank_title')));
-  masterCardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_bank_desc')));
-  masterCard.appendChild(masterCardBody);
-  masterCard.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(masterCard);
-
-  const canvasCard = el('button', { class: 'mode-card mc-teal', onclick: () => startExam(CANVAS_QUESTIONS) });
-  const canvasCardBody = el('div', { class: 'mc-body' });
-  canvasCardBody.appendChild(el('div', { class: 'mc-count' }, `${CANVAS_QUESTIONS.length} ${t('stat_questions').toLowerCase()}`));
-  canvasCardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_canvas_title')));
-  canvasCardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_canvas_desc')));
-  canvasCard.appendChild(canvasCardBody);
-  canvasCard.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(canvasCard);
-
-  const top100Card = el('button', { class: 'mode-card mc-purple', onclick: () => startExam(TOP100_QUESTIONS) });
-  const top100CardBody = el('div', { class: 'mc-body' });
-  top100CardBody.appendChild(el('div', { class: 'mc-count' }, `100 ${t('stat_questions').toLowerCase()}`));
-  top100CardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_top100_title')));
-  top100CardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_top100_desc')));
-  top100Card.appendChild(top100CardBody);
-  top100Card.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(top100Card);
-
-  const q30Card = el('button', { class: 'mode-card mc-orange', onclick: () => startExam(QUICK30_QUESTIONS) });
-  const q30CardBody = el('div', { class: 'mc-body' });
-  q30CardBody.appendChild(el('div', { class: 'mc-count' }, `30 ${t('stat_questions').toLowerCase()}`));
-  q30CardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_q30_title')));
-  q30CardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_q30_desc')));
-  q30Card.appendChild(q30CardBody);
-  q30Card.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(q30Card);
-
   const aPackCard = el('button', { class: 'mode-card mc-gold', onclick: () => startExam(A_EXAM_PACKS[0].questions, { preserveOrder: true, title: state.lang === 'no' ? 'Eksamen 1 — Normal — 25 spørsmål' : 'Exam 1 — Normal — 25 questions' }) });
   const aPackBody = el('div', { class: 'mc-body' });
   aPackBody.appendChild(el('div', { class: 'mc-count' }, `10 exams • ${A_EXAM_QUESTIONS.length} ${t('stat_questions').toLowerCase()}`));
@@ -18045,16 +18009,6 @@ function renderHome() {
     bmCard.appendChild(el('span', { class: 'mc-arrow' }, '★'));
     list.appendChild(bmCard);
   }
-
-  // Mixed exam card
-  const mixedCard = el('button', { class: 'mode-card mc-green', onclick: () => startExam(MIXED_QUESTIONS) });
-  const mixedCardBody = el('div', { class: 'mc-body' });
-  mixedCardBody.appendChild(el('div', { class: 'mc-count' }, `${MIXED_QUESTIONS.length} ${t('stat_questions').toLowerCase()}`));
-  mixedCardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_mixed_title')));
-  mixedCardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_mixed_desc')));
-  mixedCard.appendChild(mixedCardBody);
-  mixedCard.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(mixedCard);
 
   wrap.appendChild(list);
 
@@ -18125,19 +18079,6 @@ function renderHome() {
   cmpTfFolder.appendChild(cmpTfContent);
   wrap.appendChild(cmpTfFolder);
 
-  // ---- FOLDER: Practice Exams (Top 100) ----
-  const pracFolder = el('div', { class: 'folder-section' });
-  const pracHeader = el('button', { class: 'folder-header' });
-  pracHeader.innerHTML = `${t('folder_practice')} <em class="folder-chevron">▾</em>`;
-  const pracContent = el('div', { class: 'folder-content' });
-  PRACTICE_EXAMS.forEach((exam, i) => {
-    pracContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(exam) }, t('practice_btn', i + 1, exam.length)));
-  });
-  pracHeader.onclick = () => { pracHeader.classList.toggle('open'); pracContent.classList.toggle('open'); };
-  pracFolder.appendChild(pracHeader);
-  pracFolder.appendChild(pracContent);
-  wrap.appendChild(pracFolder);
-
   // ---- FOLDER: Formula Quiz ----
   const fqFolder = el('div', { class: 'folder-section' });
   const fqHeader = el('button', { class: 'folder-header' });
@@ -18171,33 +18112,6 @@ function renderHome() {
   typeFolder.appendChild(typeHeader);
   typeFolder.appendChild(typeContent);
   wrap.appendChild(typeFolder);
-
-  // ---- FOLDER: Chapters ----
-  const chapterDefs = [
-    { name: t('ch1'),  topics: ['Basics & Learning Algos'] },
-    { name: t('ch2'),  topics: ['Basics & Learning Algos'] },
-    { name: t('ch3'),  topics: ['Classification Algorithms', 'Decision Trees'] },
-    { name: t('ch4'),  topics: ['Pre-processing & Feature Extraction', 'Pandas & Data Inspection'] },
-    { name: t('ch5'),  topics: ['Dimensionality Reduction', 'Kernels & Feature Mapping'] },
-    { name: t('ch6'),  topics: ['Model Evaluation', 'Pipelines & Cross-validation', 'Overfitting & Bias/Variance'] },
-    { name: t('ch7'),  topics: ['Ensembles'] },
-    { name: t('ch10'), topics: ['Regression'] },
-    { name: t('ch11'), topics: ['Clustering'] },
-    { name: t('ch_pv'),topics: ['Code & Practical', 'Plot Interpretation', 'Symbols & Formulas'] },
-  ];
-  const chapFolder = el('div', { class: 'folder-section' });
-  const chapHeader = el('button', { class: 'folder-header' });
-  chapHeader.innerHTML = `${t('folder_chapters')} <em class="folder-chevron">▾</em>`;
-  const chapContent = el('div', { class: 'folder-content' });
-  chapterDefs.forEach(({ name, topics }) => {
-    const pool = QUESTIONS.filter(q => topics.includes(q.chapter));
-    if (!pool.length) return;
-    chapContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool) }, `${name} (${pool.length})`));
-  });
-  chapHeader.onclick = () => { chapHeader.classList.toggle('open'); chapContent.classList.toggle('open'); };
-  chapFolder.appendChild(chapHeader);
-  chapFolder.appendChild(chapContent);
-  wrap.appendChild(chapFolder);
 
   // ---- FOLDER: PowerPoint Topics ----
   const ppFolder = el('div', { class: 'folder-section' });

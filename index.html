@@ -1148,6 +1148,152 @@
     line-height: 1.55;
   }
   .a-exam-note strong { color: #92400e; }
+
+  /* ============ SUBTLE NIGHT + MOBILE POLISH ============ */
+  :root {
+    --surface-raised: #ffffff;
+  }
+  .mode-card,
+  .folder-header,
+  .stats-strip {
+    box-shadow: var(--shadow-sm);
+  }
+  .mode-card:focus-visible,
+  .folder-header:focus-visible,
+  .sub-btn:focus-visible,
+  .option:focus-visible,
+  .back-btn:focus-visible,
+  .formula-link-btn:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    outline-offset: 2px;
+  }
+  .folder-content.open {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  }
+  .sub-btn {
+    min-height: 42px;
+    white-space: normal;
+    line-height: 1.35;
+  }
+  .a-exam-note {
+    grid-column: 1 / -1;
+  }
+
+  :root.dark {
+    --bg: #11100d;
+    --surface: #1b1814;
+    --surface-2: #27221c;
+    --border: #3b342b;
+    --border-strong: #5b4f41;
+    --ink: #f4efe6;
+    --ink-2: #ded4c5;
+    --ink-3: #b8aa97;
+    --ink-4: #8d806f;
+    --accent: #f3c969;
+    --accent-soft: #302718;
+    --correct: #86efac;
+    --correct-bg: #0f2a18;
+    --correct-border: #2f6f44;
+    --wrong: #fca5a5;
+    --wrong-bg: #321314;
+    --wrong-border: #7f1d1d;
+    --warn: #f5c56b;
+    --warn-bg: #2f2413;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.35);
+    --shadow: 0 10px 26px rgba(0,0,0,.38);
+  }
+  :root.dark .topbar {
+    background: #171410;
+    border-bottom-color: #342d25;
+  }
+  :root.dark .mode-card,
+  :root.dark .folder-header,
+  :root.dark .stats-strip,
+  :root.dark .info-box,
+  :root.dark .info-card,
+  :root.dark .fs-section,
+  :root.dark .comp-section,
+  :root.dark .review-item,
+  :root.dark .option,
+  :root.dark .order-item,
+  :root.dark .match-item {
+    box-shadow: none;
+  }
+  :root.dark .mode-card:hover,
+  :root.dark .folder-header:hover,
+  :root.dark .option:hover:not(:disabled) {
+    background: #27221c;
+  }
+  :root.dark .mc-gold { border-left-color: #f3c969; }
+  :root.dark .mc-blue { border-left-color: #93c5fd; }
+  :root.dark .mc-red { border-left-color: #fca5a5; }
+  :root.dark .mc-purple { border-left-color: #c4b5fd; }
+  :root.dark .mc-green, :root.dark .mc-teal { border-left-color: #5eead4; }
+  :root.dark .mc-amber { border-left-color: #fbbf24; }
+  :root.dark .a-exam-note {
+    background: #2f2413;
+    border-color: #8a6a22;
+    color: var(--ink-2);
+  }
+  :root.dark .a-exam-note strong { color: var(--accent); }
+  :root.dark .code-block { background: #0b0a08; color: #f4efe6; }
+  :root.dark .score-pill { background: #2c2518; color: var(--accent); }
+  :root.dark .mobile-bottom-nav button.primary {
+    color: #11100d;
+  }
+
+  @media (max-width: 900px) {
+    main { padding: 24px 18px 104px; }
+    .folder-content.open {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .mobile-bottom-nav {
+      display: flex;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 200;
+      gap: 8px;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -10px 24px rgba(0,0,0,.08);
+    }
+    .mobile-bottom-nav button {
+      flex: 1;
+      min-height: 52px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .mobile-bottom-nav button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .mobile-bottom-nav button:disabled { opacity: .35; }
+    .desktop-action-row { display: none !important; }
+  }
+  @media (max-width: 640px) {
+    main { padding: 22px 14px 104px; }
+    .topbar { padding: 10px 12px; gap: 8px; }
+    .brand .sub { display: none; }
+    .topbar-right { gap: 6px; }
+    .topbar-right .score-pill { display: none; }
+    .mode-card { padding: 16px; min-height: 102px; }
+    .folder-header { min-height: 58px; padding: 15px 16px; font-size: 15px; }
+    .folder-content.open { grid-template-columns: 1fr; }
+    .sub-btn { min-height: 48px; text-align: center; }
+    .question-meta { flex-wrap: wrap; gap: 8px; }
+    .question-stem { font-size: 20px; }
+    .option { min-height: 56px; padding: 14px 15px; }
+  }
 </style>
 </head>
 <body>
@@ -18291,7 +18437,7 @@ function renderExam() {
     }
     state._refreshSubmit = refreshSubmit;
 
-    const submitRow = el('div', { style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
+    const submitRow = el('div', { class: 'desktop-action-row', style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
     const submitBtn = el('button', {
       class: 'btn btn-primary',
       style: 'flex:1;min-height:52px;font-size:16px;font-weight:700;opacity:0.4;pointer-events:none;',
@@ -18315,7 +18461,7 @@ function renderExam() {
     setTimeout(refreshSubmit, 0);
 
   } else if (state.wiseflowMode) {
-    const wfActions = el('div', { class: 'actions' });
+    const wfActions = el('div', { class: 'actions desktop-action-row' });
     wfActions.appendChild(el('button', {
       class: 'btn btn-primary', style: 'min-height:52px;font-size:16px;',
       onclick: () => { state.index++; if (state.index >= state.questions.length) finishExam(); else render(); }
@@ -18327,7 +18473,7 @@ function renderExam() {
     wrap.appendChild(mobileNavWf);
 
   } else {
-    const nextRow = el('div', { style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
+    const nextRow = el('div', { class: 'desktop-action-row', style: 'margin-top:20px;border-top:1px solid var(--border);padding-top:20px;display:flex;gap:10px;' });
     const isLast = state.index >= state.questions.length - 1;
     nextRow.appendChild(el('button', {
       class: 'btn btn-primary',
@@ -18336,7 +18482,7 @@ function renderExam() {
     }, isLast ? (state.lang === 'no' ? 'Fullfør' : 'Finish') : t('next')));
     wrap.appendChild(nextRow);
 
-    const finDiv = el('div', { class: 'finish-link' });
+    const finDiv = el('div', { class: 'finish-link desktop-action-row' });
     finDiv.appendChild(el('button', { class: 'btn btn-ghost', onclick: () => finishExam() }, t('finish_session', state.answers.filter(Boolean).length)));
     wrap.appendChild(finDiv);
 

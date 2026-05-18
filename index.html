@@ -1149,14 +1149,219 @@
   }
   .a-exam-note strong { color: #92400e; }
 
-  /* ============ SUBTLE NIGHT + MOBILE POLISH ============ */
+  /* ============ BALANCED STUDY DESIGN ============ */
   :root {
     --surface-raised: #ffffff;
+    --surface-muted: #f7f7f5;
+    --focus-gold: #ca8a04;
+    --focus-blue: #2563eb;
+    --focus-red: #dc2626;
+    --focus-purple: #7c3aed;
+    --focus-green: #0d9488;
+    --focus-slate: #64748b;
+  }
+  main {
+    max-width: 960px;
+    padding: 34px 28px 96px;
+  }
+  .exam-screen,
+  .formula-sheet-view,
+  .comparison-view,
+  .result-screen {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .study-home {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .study-hero {
+    padding: 4px 0 22px;
+  }
+  .home-kicker,
+  .section-kicker {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 8px;
+  }
+  .study-home h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 5.2vw, 52px);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+  }
+  .study-subtitle {
+    max-width: 680px;
+    color: var(--ink-3);
+    font-size: 18px;
+    line-height: 1.62;
+    margin-bottom: 18px;
+  }
+  .exam-countdown {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink-2);
+    box-shadow: var(--shadow-sm);
+  }
+  .exam-countdown .label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+  .exam-countdown .time {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .tool-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 2px 0 18px;
+  }
+  .formula-link-btn {
+    min-height: 42px;
+    margin-bottom: 0;
+    background: var(--surface);
+    color: var(--accent);
+  }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    overflow: hidden;
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-sm);
+  }
+  .stats-strip .stat {
+    padding: 4px 16px 4px 0;
+  }
+  .stats-strip .stat-num {
+    font-size: 30px;
+  }
+  .section-block {
+    margin-top: 28px;
+  }
+  .section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .section-hint {
+    color: var(--ink-3);
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 360px;
+    text-align: right;
+  }
+  .priority-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .priority-grid .mode-card {
+    min-height: 128px;
+    align-items: flex-start;
   }
   .mode-card,
   .folder-header,
   .stats-strip {
     box-shadow: var(--shadow-sm);
+  }
+  .mode-card {
+    background: var(--surface-raised);
+  }
+  .mode-card .mc-title {
+    font-size: 17px;
+    letter-spacing: -0.01em;
+  }
+  .mode-card .mc-desc {
+    font-size: 14px;
+  }
+  .mc-gold { border-left-color: var(--focus-gold); }
+  .mc-blue { border-left-color: var(--focus-blue); }
+  .mc-red { border-left-color: var(--focus-red); }
+  .mc-purple { border-left-color: var(--focus-purple); }
+  .mc-green, .mc-teal { border-left-color: var(--focus-green); }
+  .mc-slate { border-left-color: var(--focus-slate); }
+  .mc-amber { border-left-color: #d97706; }
+  .folder-stack {
+    display: grid;
+    gap: 10px;
+  }
+  .folder-section {
+    --folder-color: var(--accent);
+    margin-bottom: 0;
+  }
+  .folder-gold { --folder-color: var(--focus-gold); }
+  .folder-red { --folder-color: var(--focus-red); }
+  .folder-blue { --folder-color: var(--focus-blue); }
+  .folder-purple { --folder-color: var(--focus-purple); }
+  .folder-green { --folder-color: var(--focus-green); }
+  .folder-slate { --folder-color: var(--focus-slate); }
+  .folder-amber { --folder-color: #d97706; }
+  .folder-header {
+    min-height: 64px;
+    border-left: 4px solid var(--folder-color);
+    background: var(--surface-raised);
+  }
+  .folder-header:hover,
+  .folder-header.open {
+    border-color: var(--border);
+    border-left-color: var(--folder-color);
+  }
+  .folder-header.open .folder-chevron {
+    color: var(--folder-color);
+  }
+  .folder-content {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 9px;
+    padding: 14px;
+    border-color: var(--border);
+    border-left: 4px solid var(--folder-color);
+    background: var(--surface);
+  }
+  .folder-content.open {
+    display: grid;
+  }
+  .sub-btn {
+    min-height: 44px;
+    padding: 10px 12px;
+    white-space: normal;
+    line-height: 1.35;
+    text-align: left;
+    background: var(--surface-muted);
+  }
+  .sub-btn:hover {
+    border-color: var(--folder-color);
+    color: var(--ink);
+    background: var(--surface);
+  }
+  .a-exam-note {
+    grid-column: 1 / -1;
+    background: var(--warn-bg);
   }
   .mode-card:focus-visible,
   .folder-header:focus-visible,
@@ -1167,22 +1372,12 @@
     outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
     outline-offset: 2px;
   }
-  .folder-content.open {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  }
-  .sub-btn {
-    min-height: 42px;
-    white-space: normal;
-    line-height: 1.35;
-  }
-  .a-exam-note {
-    grid-column: 1 / -1;
-  }
 
   :root.dark {
     --bg: #11100d;
     --surface: #1b1814;
+    --surface-raised: #211d18;
+    --surface-muted: #171511;
     --surface-2: #27221c;
     --border: #3b342b;
     --border-strong: #5b4f41;
@@ -1200,6 +1395,12 @@
     --wrong-border: #7f1d1d;
     --warn: #f5c56b;
     --warn-bg: #2f2413;
+    --focus-gold: #f3c969;
+    --focus-blue: #93c5fd;
+    --focus-red: #fca5a5;
+    --focus-purple: #c4b5fd;
+    --focus-green: #5eead4;
+    --focus-slate: #94a3b8;
     --shadow-sm: 0 1px 2px rgba(0,0,0,.35);
     --shadow: 0 10px 26px rgba(0,0,0,.38);
   }
@@ -1210,14 +1411,7 @@
   :root.dark .mode-card,
   :root.dark .folder-header,
   :root.dark .stats-strip,
-  :root.dark .info-box,
-  :root.dark .info-card,
-  :root.dark .fs-section,
-  :root.dark .comp-section,
-  :root.dark .review-item,
-  :root.dark .option,
-  :root.dark .order-item,
-  :root.dark .match-item {
+  :root.dark .exam-countdown {
     box-shadow: none;
   }
   :root.dark .mode-card:hover,
@@ -1225,12 +1419,6 @@
   :root.dark .option:hover:not(:disabled) {
     background: #27221c;
   }
-  :root.dark .mc-gold { border-left-color: #f3c969; }
-  :root.dark .mc-blue { border-left-color: #93c5fd; }
-  :root.dark .mc-red { border-left-color: #fca5a5; }
-  :root.dark .mc-purple { border-left-color: #c4b5fd; }
-  :root.dark .mc-green, :root.dark .mc-teal { border-left-color: #5eead4; }
-  :root.dark .mc-amber { border-left-color: #fbbf24; }
   :root.dark .a-exam-note {
     background: #2f2413;
     border-color: #8a6a22;
@@ -1239,15 +1427,13 @@
   :root.dark .a-exam-note strong { color: var(--accent); }
   :root.dark .code-block { background: #0b0a08; color: #f4efe6; }
   :root.dark .score-pill { background: #2c2518; color: var(--accent); }
-  :root.dark .mobile-bottom-nav button.primary {
-    color: #11100d;
-  }
+  :root.dark .mobile-bottom-nav button.primary { color: #11100d; }
 
   @media (max-width: 900px) {
-    main { padding: 24px 18px 104px; }
-    .folder-content.open {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    main { max-width: 100%; padding: 26px 18px 104px; }
+    .priority-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .study-home h1 { font-size: 42px; }
+    .folder-content { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .mobile-bottom-nav {
       display: flex;
       position: fixed;
@@ -1281,14 +1467,29 @@
     .desktop-action-row { display: none !important; }
   }
   @media (max-width: 640px) {
-    main { padding: 22px 14px 104px; }
     .topbar { padding: 10px 12px; gap: 8px; }
+    .brand { gap: 6px; min-width: 0; }
+    .brand .logo { font-size: 20px; }
     .brand .sub { display: none; }
     .topbar-right { gap: 6px; }
     .topbar-right .score-pill { display: none; }
-    .mode-card { padding: 16px; min-height: 102px; }
+    main { padding: 22px 14px 104px; }
+    .study-hero { padding-top: 0; }
+    .study-home h1 { font-size: 34px; }
+    .study-subtitle { font-size: 16px; line-height: 1.55; }
+    .exam-countdown { width: 100%; justify-content: space-between; border-radius: var(--radius-lg); }
+    .tool-row { display: grid; grid-template-columns: 1fr; }
+    .formula-link-btn { justify-content: center; width: 100%; }
+    .stats-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .stats-strip .stat { padding: 0; }
+    .stats-strip .stat-num { font-size: 26px; }
+    .priority-grid { grid-template-columns: 1fr; }
+    .priority-grid .mode-card,
+    .mode-card { min-height: 104px; padding: 16px; }
+    .section-title-row { display: block; }
+    .section-hint { margin-top: 4px; text-align: left; }
     .folder-header { min-height: 58px; padding: 15px 16px; font-size: 15px; }
-    .folder-content.open { grid-template-columns: 1fr; }
+    .folder-content { grid-template-columns: 1fr; padding: 10px; }
     .sub-btn { min-height: 48px; text-align: center; }
     .question-meta { flex-wrap: wrap; gap: 8px; }
     .question-stem { font-size: 20px; }
@@ -18039,277 +18240,174 @@ function renderTopbar() {
 
 // ===== HOME =====
 function renderHome() {
-  const wrap = el('div', { class: 'start-screen' });
-  wrap.appendChild(el('h1', {}, t('h1')));
+  const no = state.lang === 'no';
+  const wrap = el('div', { class: 'start-screen study-home' });
 
-  // ── Exam countdown (only on home page) ────────────────────────────────
-  const cdBox = el('div', {
-    id: 'home-countdown',
-    style: 'margin:0 auto 28px;padding:20px 24px;max-width:520px;text-align:center;background:linear-gradient(135deg,#1e293b,#0f172a);color:#f8fafc;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,0.15);'
-  });
-  cdBox.appendChild(el('div', { style:'font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:8px;' }, state.lang==='no' ? 'Tid til eksamen' : 'Time until exam'));
-  const cdDisplay = el('div', { id:'cd-display', style:'font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:32px;font-weight:700;letter-spacing:1px;line-height:1.2;' }, '—');
-  cdBox.appendChild(cdDisplay);
-  cdBox.appendChild(el('div', { style:'font-size:13px;opacity:0.65;margin-top:6px;' }, state.lang==='no' ? 'Tirsdag 19. mai 2026 kl. 09:00' : 'Tuesday 19 May 2026 at 09:00'));
-  wrap.appendChild(cdBox);
+  const hero = el('section', { class: 'study-hero' });
+  hero.appendChild(el('div', { class: 'home-kicker' }, no ? 'Siste lesedag' : 'Final study day'));
+  hero.appendChild(el('h1', {}, no ? 'DAT200 Eksamenssimulator' : 'DAT200 Exam Simulator'));
+  hero.appendChild(el('p', { class: 'study-subtitle' }, no
+    ? 'Start med A-modus og Siste-dag Drill. Bruk biblioteket under kun når du trenger målrettet repetisjon.'
+    : 'Start with A-mode and Final-day Drill. Use the library below only when you need targeted review.'));
+  const cdBox = el('div', { class: 'exam-countdown', id: 'home-countdown' });
+  cdBox.appendChild(el('span', { class: 'label' }, no ? 'Tid til eksamen' : 'Time until exam'));
+  const cdTime = el('span', { class: 'time', id: 'cd-display' }, '-');
+  cdBox.appendChild(cdTime);
+  hero.appendChild(cdBox);
+  wrap.appendChild(hero);
 
-  // Start the countdown ticker (cleared when leaving home)
   if (state._cdInterval) clearInterval(state._cdInterval);
   const target = new Date('2026-05-19T09:00:00+02:00').getTime();
   function tickCD() {
-    const display = document.getElementById('cd-display');
-    if (!display) { clearInterval(state._cdInterval); state._cdInterval = null; return; }
     const ms = target - Date.now();
-    if (ms <= 0) { display.textContent = state.lang==='no' ? 'Eksamen pågår!' : 'Exam in progress!'; clearInterval(state._cdInterval); return; }
+    if (ms <= 0) { cdTime.textContent = no ? 'Eksamen pågår' : 'Exam in progress'; clearInterval(state._cdInterval); return; }
     const d = Math.floor(ms / 86400000);
     const h = Math.floor((ms % 86400000) / 3600000);
     const m = Math.floor((ms % 3600000) / 60000);
     const s = Math.floor((ms % 60000) / 1000);
-    const pad = n => String(n).padStart(2,'0');
-    display.textContent = `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+    const pad = n => String(n).padStart(2, '0');
+    cdTime.textContent = d + 'd ' + pad(h) + ':' + pad(m) + ':' + pad(s);
   }
   tickCD();
-  state._cdInterval = setInterval(tickCD, 1000);
+  state._cdInterval = setInterval(() => {
+    if (!cdTime.isConnected) { clearInterval(state._cdInterval); state._cdInterval = null; return; }
+    tickCD();
+  }, 1000);
 
-  const toolRow = el('div', { style: 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;' });
+  const toolRow = el('div', { class: 'tool-row' });
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'formulas'; render(); } }, t('btn_formula')));
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'comparison'; render(); } }, t('btn_comparison')));
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'progress'; render(); } }, t('btn_progress')));
   wrap.appendChild(toolRow);
 
-  // stats
   const totalQ = QUESTIONS.length;
   const totalChapters = new Set(QUESTIONS.map(q => q.chapter)).size;
   const history = state.history.total;
-  const pct = history.taken > 0 ? Math.round((history.correct / history.taken) * 100) : '—';
+  const pct = history.taken > 0 ? Math.round((history.correct / history.taken) * 100) : '-';
   const stats = el('div', { class: 'stats-strip' });
-  stats.appendChild(el('div', { class: 'stat' },
-    el('span', { class: 'stat-num' }, String(totalQ)),
-    el('span', { class: 'stat-label' }, t('stat_questions'))));
-  stats.appendChild(el('div', { class: 'stat' },
-    el('span', { class: 'stat-num' }, String(totalChapters)),
-    el('span', { class: 'stat-label' }, t('stat_chapters'))));
-  stats.appendChild(el('div', { class: 'stat' },
-    el('span', { class: 'stat-num' }, String(history.taken)),
-    el('span', { class: 'stat-label' }, t('stat_answered'))));
-  stats.appendChild(el('div', { class: 'stat' },
-    el('span', { class: 'stat-num' }, history.taken > 0 ? `${pct}%` : '—'),
-    el('span', { class: 'stat-label' }, t('stat_average'))));
+  stats.appendChild(el('div', { class: 'stat' }, el('span', { class: 'stat-num' }, String(totalQ)), el('span', { class: 'stat-label' }, t('stat_questions'))));
+  stats.appendChild(el('div', { class: 'stat' }, el('span', { class: 'stat-num' }, String(totalChapters)), el('span', { class: 'stat-label' }, t('stat_chapters'))));
+  stats.appendChild(el('div', { class: 'stat' }, el('span', { class: 'stat-num' }, String(history.taken)), el('span', { class: 'stat-label' }, t('stat_answered'))));
+  stats.appendChild(el('div', { class: 'stat' }, el('span', { class: 'stat-num' }, history.taken > 0 ? pct + '%' : '-'), el('span', { class: 'stat-label' }, t('stat_average'))));
   wrap.appendChild(stats);
 
-  const list = el('div', { class: 'chapter-list' });
+  function section(title, hint, child, kicker) {
+    const block = el('section', { class: 'section-block' });
+    const row = el('div', { class: 'section-title-row' });
+    const left = el('div', {});
+    left.appendChild(el('div', { class: 'section-kicker' }, kicker || (no ? 'Prioritet' : 'Priority')));
+    left.appendChild(el('div', { class: 'section-title' }, title));
+    row.appendChild(left);
+    if (hint) row.appendChild(el('div', { class: 'section-hint' }, hint));
+    block.appendChild(row);
+    block.appendChild(child);
+    return block;
+  }
+  function modeCard(cfg) {
+    const card = el('button', { class: 'mode-card ' + cfg.cls, onclick: cfg.onclick });
+    const body = el('div', { class: 'mc-body' });
+    body.appendChild(el('div', { class: 'mc-count' }, cfg.count));
+    body.appendChild(el('div', { class: 'mc-title' }, cfg.title));
+    body.appendChild(el('div', { class: 'mc-desc' }, cfg.desc));
+    card.appendChild(body);
+    card.appendChild(el('span', { class: 'mc-arrow' }, cfg.arrow || '→'));
+    return card;
+  }
 
-  const aPackCard = el('button', { class: 'mode-card mc-gold', onclick: () => startExam(A_EXAM_PACKS[0].questions, { preserveOrder: true, title: state.lang === 'no' ? 'Eksamen 1 — Normal — 25 spørsmål' : 'Exam 1 — Normal — 25 questions' }) });
-  const aPackBody = el('div', { class: 'mc-body' });
-  aPackBody.appendChild(el('div', { class: 'mc-count' }, `10 exams • ${A_EXAM_QUESTIONS.length} ${t('stat_questions').toLowerCase()}`));
-  aPackBody.appendChild(el('div', { class: 'mc-title' }, state.lang === 'no' ? 'A-modus eksamenspakke' : 'A-mode exam pack'));
-  aPackBody.appendChild(el('div', { class: 'mc-desc' }, state.lang === 'no' ? 'Start på Exam 1. Bruk folderen under for alle 10 settene.' : 'Starts Exam 1. Use the folder below for all 10 sets.'));
-  aPackCard.appendChild(aPackBody);
-  aPackCard.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(aPackCard);
-
-  const wfCard = el('button', { class: 'mode-card mc-blue', onclick: () => startWiseflow() });
-  const wfCardBody = el('div', { class: 'mc-body' });
-  wfCardBody.appendChild(el('div', { class: 'mc-count' }, `15 ${t('stat_questions').toLowerCase()}  •  45 min`));
-  wfCardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_wf_title')));
-  wfCardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_wf_desc')));
-  wfCard.appendChild(wfCardBody);
-  wfCard.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-  list.appendChild(wfCard);
-
-  // wrong-answer drill (only if there are wrong answers)
+  const priorityGrid = el('div', { class: 'priority-grid' });
+  priorityGrid.appendChild(modeCard({
+    cls: 'mc-gold', count: '10 ' + (no ? 'eksamener' : 'exams') + ' • ' + A_EXAM_QUESTIONS.length + ' ' + t('stat_questions').toLowerCase(),
+    title: no ? 'A-modus eksamenspakke' : 'A-mode exam pack',
+    desc: no ? 'Start Exam 1. Bruk folderen under når du vil velge bestemt sett.' : 'Starts Exam 1. Use the folder below when choosing a specific set.',
+    onclick: () => startExam(A_EXAM_PACKS[0].questions, { preserveOrder: true, title: no ? 'Eksamen 1 — Normal — 25 spørsmål' : 'Exam 1 — Normal — 25 questions' })
+  }));
+  priorityGrid.appendChild(modeCard({
+    cls: 'mc-red', count: '185 ' + t('stat_questions').toLowerCase(),
+    title: no ? 'Siste-dag Drill' : 'Final-day Drill',
+    desc: no ? 'Høyest verdi for siste leseøkt: fill-blank, T/F, multi, match, plot og kode.' : 'Highest value for the final review: fill-blank, T/F, multi, match, plot and code.',
+    onclick: () => startExam(LASTDAY_QUESTIONS, { title: no ? 'Siste-dag Drill — 185 spørsmål' : 'Final-day Drill — 185 questions' })
+  }));
+  priorityGrid.appendChild(modeCard({ cls: 'mc-blue', count: '15 ' + t('stat_questions').toLowerCase() + ' • 45 min', title: t('mc_wf_title'), desc: t('mc_wf_desc'), onclick: () => startWiseflow() }));
   const wrongPool = REVIEW_QUESTIONS.filter(q => (state.history.wrongIds || []).includes(q.id));
-  if (wrongPool.length > 0) {
-    const drillCard = el('button', { class: 'mode-card mc-red', onclick: () => startExam(wrongPool) });
-    const drillCardBody = el('div', { class: 'mc-body' });
-    drillCardBody.appendChild(el('div', { class: 'mc-count' }, `${wrongPool.length} ${t('stat_questions').toLowerCase()}`));
-    drillCardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_drill_title')));
-    drillCardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_drill_desc')));
-    drillCard.appendChild(drillCardBody);
-    drillCard.appendChild(el('span', { class: 'mc-arrow' }, '→'));
-    list.appendChild(drillCard);
-  }
-
-  // Bookmarked card (only if there are bookmarks)
+  if (wrongPool.length > 0) priorityGrid.appendChild(modeCard({ cls: 'mc-red', count: wrongPool.length + ' ' + t('stat_questions').toLowerCase(), title: t('mc_drill_title'), desc: t('mc_drill_desc'), onclick: () => startExam(wrongPool, { title: t('mc_drill_title') }) }));
   const bookmarkPool = REVIEW_QUESTIONS.filter(q => (state.history.bookmarks || []).includes(q.id));
-  if (bookmarkPool.length > 0) {
-    const bmCard = el('button', { class: 'mode-card mc-amber', onclick: () => startExam(bookmarkPool) });
-    const bmCardBody = el('div', { class: 'mc-body' });
-    bmCardBody.appendChild(el('div', { class: 'mc-count' }, `${bookmarkPool.length} ${t('stat_questions').toLowerCase()}`));
-    bmCardBody.appendChild(el('div', { class: 'mc-title' }, t('mc_bookmarked_title')));
-    bmCardBody.appendChild(el('div', { class: 'mc-desc' }, t('mc_bookmarked_desc')));
-    bmCard.appendChild(bmCardBody);
-    bmCard.appendChild(el('span', { class: 'mc-arrow' }, '★'));
-    list.appendChild(bmCard);
+  if (bookmarkPool.length > 0) priorityGrid.appendChild(modeCard({ cls: 'mc-amber', count: bookmarkPool.length + ' ' + t('stat_questions').toLowerCase(), title: t('mc_bookmarked_title'), desc: t('mc_bookmarked_desc'), arrow: '★', onclick: () => startExam(bookmarkPool, { title: t('mc_bookmarked_title') }) }));
+  wrap.appendChild(section(no ? 'Start her' : 'Start here', no ? 'Alt annet er sekundært i dag.' : 'Everything else is secondary today.', priorityGrid));
+
+  const folderStack = el('div', { class: 'folder-stack' });
+  function addFolder(title, className, buildContent, open = false) {
+    const folder = el('div', { class: 'folder-section ' + className });
+    const header = el('button', { class: 'folder-header' + (open ? ' open' : '') });
+    header.innerHTML = title + ' <em class="folder-chevron">▾</em>';
+    const content = el('div', { class: 'folder-content' + (open ? ' open' : '') });
+    buildContent(content);
+    header.onclick = () => { header.classList.toggle('open'); content.classList.toggle('open'); };
+    folder.appendChild(header); folder.appendChild(content); folderStack.appendChild(folder);
   }
-
-  wrap.appendChild(list);
-
-  // ---- FOLDER: A-modus curated mock exams ----
-  const aFolder = el('div', { class: 'folder-section' });
-  const aHeader = el('button', { class: 'folder-header open' });
-  aHeader.innerHTML = `${state.lang === 'no' ? 'A-modus — 10 eksamener à 25 spørsmål' : 'A-mode — 10 exams of 25 questions'} <em class="folder-chevron">▾</em>`;
-  const aContent = el('div', { class: 'folder-content open' });
-  aContent.appendChild(el('div', { class: 'a-exam-note' }, 
-    state.lang === 'no'
-      ? 'Dette er den kyniske A-pakken: 5 normale eksamener + 5 twist-eksamener. Ta dem uten fasit, og bruk feilene som red-zone.'
-      : 'This is the focused A-pack: 5 normal exams + 5 twist exams. Take them without the answer key and turn mistakes into red-zone review.'
-  ));
-  A_EXAM_PACKS.forEach((pack, i) => {
-    const label = state.lang === 'no'
-      ? `Eksamen ${i + 1} — ${pack.mode === 'Twist' ? 'Twist' : 'Normal'} — ${pack.questions.length} spørsmål`
-      : `Exam ${i + 1} — ${pack.mode} — ${pack.questions.length} questions`;
-    aContent.appendChild(el('button', {
-      class: 'sub-btn',
-      onclick: () => startExam(pack.questions, { preserveOrder: true, title: label })
-    }, label));
+  addFolder(no ? 'A-modus — 10 eksamener à 25 spørsmål' : 'A-mode — 10 exams of 25 questions', 'folder-gold', (content) => {
+    content.appendChild(el('div', { class: 'a-exam-note' }, no ? 'Dette er den kyniske A-pakken: 5 normale eksamener + 5 twist-eksamener. Ta dem uten fasit, og bruk feilene som red-zone.' : 'This is the focused A-pack: 5 normal exams + 5 twist exams. Take them without the answer key and turn mistakes into red-zone review.'));
+    A_EXAM_PACKS.forEach((pack, i) => {
+      const label = no ? 'Eksamen ' + (i + 1) + ' — ' + (pack.mode === 'Twist' ? 'Twist' : 'Normal') + ' — ' + pack.questions.length + ' spørsmål' : 'Exam ' + (i + 1) + ' — ' + pack.mode + ' — ' + pack.questions.length + ' questions';
+      content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pack.questions, { preserveOrder: true, title: label }) }, label));
+    });
+  }, true);
+  addFolder(no ? 'Siste-dag Drill — 185 spørsmål' : 'Final-day Drill — 185 questions', 'folder-red', (content) => {
+    const drillTypes = [
+      { label: no ? 'Alle 185 spørsmål' : 'All 185 questions', filter: () => true },
+      { label: no ? 'Fill-blank style (50)' : 'Fill-blank (50)', filter: q => q.id.startsWith('ld_fb_') },
+      { label: no ? 'Sant / Usant (45)' : 'True / False (45)', filter: q => q.id.startsWith('ld_tf_') },
+      { label: 'Multi-select (35)', filter: q => q.id.startsWith('ld_ms_') },
+      { label: no ? 'Match / Formel (10)' : 'Match / Formula (10)', filter: q => q.id.startsWith('ld_mt_') },
+      { label: no ? 'Konsept / Plot (25)' : 'Concept / Plot (25)', filter: q => q.id.startsWith('ld_cp_') },
+      { label: no ? 'Kode / sklearn (20)' : 'Code / sklearn (20)', filter: q => q.id.startsWith('ld_code_') },
+    ];
+    drillTypes.forEach(({ label, filter }) => { const qs = LASTDAY_QUESTIONS.filter(filter); if (qs.length) content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(qs, { title: label + ' — ' + qs.length }) }, label + ' — ' + qs.length)); });
   });
-  aHeader.onclick = () => { aHeader.classList.toggle('open'); aContent.classList.toggle('open'); };
-  aFolder.appendChild(aHeader);
-  aFolder.appendChild(aContent);
-  wrap.appendChild(aFolder);
-
-  // ---- FOLDER: Eksamenspakke ----
-  const epFolder = el('div', { class: 'folder-section' });
-  const epHeader = el('button', { class: 'folder-header' });
-  epHeader.innerHTML = `${state.lang === 'no' ? `Eksamenspakke — ${EKSAMENSPAKKE_EXAMS.length} eksamener` : `Exam Pack — ${EKSAMENSPAKKE_EXAMS.length} exams`} <em class="folder-chevron">▾</em>`;
-  const epContent = el('div', { class: 'folder-content' });
-  EKSAMENSPAKKE_EXAMS.forEach((exam, i) => {
-    epContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(exam) },
-      state.lang === 'no' ? `Eksamen ${i + 1} — ${exam.length} spørsmål` : `Exam ${i + 1} — ${exam.length} questions`));
+  addFolder(no
+    ? 'WiseFLOW Drill — 6 balanserte eksamener (60 min hver)'
+    : 'WiseFLOW Drill — 6 balanced exams (60 min each)', 'folder-blue', (content) => {
+    content.appendChild(el('div', { class: 'a-exam-note' }, no
+      ? 'Eksamenssituasjon: tidsbegrenset, ingen fasit underveis, karakter vises på slutten. Hver eksamen har ~31 spørsmål jevnt fordelt på alle 6 typer (fill-blank, T/F, multi, match, plot, kode).'
+      : 'Exam conditions: timed, no feedback during the test, grade revealed at the end. Each exam has ~31 questions balanced across all 6 types (fill-blank, T/F, multi, match, plot, code).'));
+    LASTDAY_WF_EXAMS.forEach((exam, i) => {
+      const label = (no ? 'WiseFLOW Eksamen ' : 'WiseFLOW Exam ') + (i + 1) + ' — ' + exam.length + (no ? ' spørsmål • 60 min' : ' questions • 60 min');
+      content.appendChild(el('button', { class: 'sub-btn', onclick: () => startWiseflowPool(exam, 60, label) }, label));
+    });
   });
-  epHeader.onclick = () => { epHeader.classList.toggle('open'); epContent.classList.toggle('open'); };
-  epFolder.appendChild(epHeader);
-  epFolder.appendChild(epContent);
-  wrap.appendChild(epFolder);
-
-  // ---- FOLDER: Comparison True/False ----
-  const cmpTfFolder = el('div', { class: 'folder-section' });
-  const cmpTfHeader = el('button', { class: 'folder-header' });
-  cmpTfHeader.innerHTML = `${state.lang === 'no' ? 'Sammenligning — Sant / Usant' : 'Comparison — True / False'} <em class="folder-chevron">▾</em>`;
-  const cmpTfContent = el('div', { class: 'folder-content' });
-  const cmpTopics = [
-    { label: state.lang === 'no' ? 'PCA vs LDA (8 spørsmål)' : 'PCA vs LDA (8 questions)',       ids: ['ctf_001','ctf_002','ctf_003','ctf_004','ctf_005','ctf_006','ctf_007','ctf_008'] },
-    { label: state.lang === 'no' ? 'Ridge vs Lasso (7 spørsmål)' : 'Ridge vs Lasso (7 questions)', ids: ['ctf_009','ctf_010','ctf_011','ctf_012','ctf_013','ctf_014','ctf_015'] },
-    { label: state.lang === 'no' ? 'Bagging vs Boosting (7 spørsmål)' : 'Bagging vs Boosting (7 questions)', ids: ['ctf_016','ctf_017','ctf_018','ctf_019','ctf_020','ctf_021','ctf_022'] },
-    { label: state.lang === 'no' ? 'SVM vs KNN (5 spørsmål)' : 'SVM vs KNN (5 questions)',        ids: ['ctf_023','ctf_024','ctf_025','ctf_026','ctf_027'] },
-    { label: state.lang === 'no' ? 'K-Means vs Hierarkisk (5 spørsmål)' : 'K-Means vs Hierarchical (5 questions)', ids: ['ctf_028','ctf_029','ctf_030','ctf_031','ctf_032'] },
-    { label: state.lang === 'no' ? 'Bias vs Varians (5 spørsmål)' : 'Bias vs Variance (5 questions)', ids: ['ctf_033','ctf_034','ctf_035','ctf_036','ctf_037'] },
-    { label: state.lang === 'no' ? 'Softmax vs Sigmoid (3 spørsmål)' : 'Softmax vs Sigmoid (3 questions)', ids: ['ctf_038','ctf_039','ctf_040'] },
-    { label: state.lang === 'no' ? 'Logistisk vs Lineær regresjon (5 spørsmål)' : 'Logistic vs Linear Regression (5 questions)', ids: ['ctf_041','ctf_042','ctf_043','ctf_044','ctf_045'] },
-    { label: state.lang === 'no' ? 'Random Forest vs Gradient Boosting (5 spørsmål)' : 'Random Forest vs Gradient Boosting (5 questions)', ids: ['ctf_046','ctf_047','ctf_048','ctf_049','ctf_050'] },
-    { label: state.lang === 'no' ? 'Hard margin vs Soft margin SVM (4 spørsmål)' : 'Hard margin vs Soft margin SVM (4 questions)', ids: ['ctf_051','ctf_052','ctf_053','ctf_054'] },
-    { label: state.lang === 'no' ? 'Presisjon vs Recall (3 spørsmål)' : 'Precision vs Recall (3 questions)', ids: ['ctf_055','ctf_056','ctf_057'] },
-    { label: state.lang === 'no' ? 'Overfitting vs Underfitting (3 spørsmål)' : 'Overfitting vs Underfitting (3 questions)', ids: ['ctf_058','ctf_059','ctf_060'] },
-  ];
-  cmpTfContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(COMPARISON_TF_QUESTIONS) }, state.lang === 'no' ? `Alle sammenligninger (${COMPARISON_TF_QUESTIONS.length} spørsmål)` : `All comparisons (${COMPARISON_TF_QUESTIONS.length} questions)`));
-  cmpTopics.forEach(({ label, ids }) => {
-    const pool = COMPARISON_TF_QUESTIONS.filter(q => ids.includes(q.id));
-    cmpTfContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool) }, label));
+  addFolder(no ? 'Kontrollbanker' : 'Control banks', 'folder-slate', (content) => {
+    [[t('mc_bank_title'), QUESTIONS], [t('mc_canvas_title'), CANVAS_QUESTIONS], [t('mc_top100_title'), TOP100_QUESTIONS], [t('mc_q30_title'), QUICK30_QUESTIONS], [t('mc_mixed_title'), MIXED_QUESTIONS]].forEach(([label, pool]) => content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool, { title: label }) }, label + ' — ' + pool.length)));
   });
-  cmpTfHeader.onclick = () => { cmpTfHeader.classList.toggle('open'); cmpTfContent.classList.toggle('open'); };
-  cmpTfFolder.appendChild(cmpTfHeader);
-  cmpTfFolder.appendChild(cmpTfContent);
-  wrap.appendChild(cmpTfFolder);
-
-  // ---- FOLDER: Formula Quiz ----
-  const fqFolder = el('div', { class: 'folder-section' });
-  const fqHeader = el('button', { class: 'folder-header' });
-  fqHeader.innerHTML = `${t('folder_fquiz')} <em class="folder-chevron">▾</em>`;
-  const fqContent = el('div', { class: 'folder-content' });
-  const fqSections = ['SVM','Linear & Logistic Regression','Adaline / Perceptron','Gradient Descent','PCA','LDA','Regularization','Decision Trees','AdaBoost','Gradient Boosting','K-Means','Evaluation Metrics','RBF Kernel','Bias-Variance','Linear Regression'];
-  fqContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(FORMULA_QUIZ_QUESTIONS) }, `All formulas (${FORMULA_QUIZ_QUESTIONS.length})`));
-  fqHeader.onclick = () => { fqHeader.classList.toggle('open'); fqContent.classList.toggle('open'); };
-  fqFolder.appendChild(fqHeader);
-  fqFolder.appendChild(fqContent);
-  wrap.appendChild(fqFolder);
-
-  // ---- FOLDER: Question Types ----
-  const typeMap = [
-    [t('type_mc'), 'single'], [t('type_tf'), 'true_false'], [t('type_multi'), 'multi'],
-    [t('type_order'), 'order'], [t('type_match'), 'match'], [t('type_fmatch'), 'formula_match'],
-    [t('type_sym'), 'symbol'], [t('type_code'), 'code'], [t('type_plot'), 'plot'],
-    [t('type_fig'), 'figure'], [t('type_scenario'), 'scenario'],
-    [t('type_sc'), 'select_correct'], [t('type_sw'), 'select_wrong'], [t('type_process'), 'process']
-  ];
-  const typeFolder = el('div', { class: 'folder-section' });
-  const typeHeader = el('button', { class: 'folder-header' });
-  typeHeader.innerHTML = `${t('folder_qtypes')} <em class="folder-chevron">▾</em>`;
-  const typeContent = el('div', { class: 'folder-content' });
-  typeMap.forEach(([label, type]) => {
-    const pool = QUESTIONS.filter(q => q.type === type);
-    if (!pool.length) return;
-    typeContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool) }, `${label} (${pool.length})`));
+  addFolder(no ? 'Eksamenspakke — ' + EKSAMENSPAKKE_EXAMS.length + ' eksamener' : 'Exam Pack — ' + EKSAMENSPAKKE_EXAMS.length + ' exams', 'folder-blue', (content) => {
+    EKSAMENSPAKKE_EXAMS.forEach((exam, i) => { const label = no ? 'Eksamen ' + (i + 1) + ' — ' + exam.length + ' spørsmål' : 'Exam ' + (i + 1) + ' — ' + exam.length + ' questions'; content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(exam, { title: label }) }, label)); });
   });
-  typeHeader.onclick = () => { typeHeader.classList.toggle('open'); typeContent.classList.toggle('open'); };
-  typeFolder.appendChild(typeHeader);
-  typeFolder.appendChild(typeContent);
-  wrap.appendChild(typeFolder);
-
-  // ---- FOLDER: PowerPoint Topics ----
-  const ppFolder = el('div', { class: 'folder-section' });
-  const ppHeader = el('button', { class: 'folder-header' });
-  ppHeader.innerHTML = `${t('folder_pp')} <em class="folder-chevron">▾</em>`;
-  const ppContent = el('div', { class: 'folder-content' });
-  for (const [chapter, count] of chaptersOf()) {
-    const pool = QUESTIONS.filter(q => q.chapter === chapter);
-    ppContent.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool) }, `${chapter} (${count})`));
-  }
-  ppHeader.onclick = () => { ppHeader.classList.toggle('open'); ppContent.classList.toggle('open'); };
-  ppFolder.appendChild(ppHeader);
-  ppFolder.appendChild(ppContent);
-  wrap.appendChild(ppFolder);
-
-  // ── Siste-dag Drill ──────────────────────────────────────────────────
-  const drillFolder = el('div', { class: 'folder' });
-  const drillHeader = el('div', { class: 'folder-header', onclick: () => {
-    drillHeader.classList.toggle('open');
-    drillContent.classList.toggle('open');
-  }});
-  drillHeader.innerHTML = `Siste-dag Drill &mdash; 185 spørsmål <em class="folder-chevron">▾</em>`;
-  const drillContent = el('div', { class: 'folder-content' });
-  const drillTypes = [
-    {label:'Alle 185 spørsmål', filter: ()=>true},
-    {label:'Fill-blank style (50)', filter: q=>q.id.startsWith('ld_fb_')},
-    {label:'Sant / Usant (45)', filter: q=>q.id.startsWith('ld_tf_')},
-    {label:'Multi-select (35)', filter: q=>q.id.startsWith('ld_ms_')},
-    {label:'Match / Formel (10)', filter: q=>q.id.startsWith('ld_mt_')},
-    {label:'Konsept / Plot (25)', filter: q=>q.id.startsWith('ld_cp_')},
-    {label:'Kode / sklearn (20)', filter: q=>q.id.startsWith('ld_code_')},
-  ];
-  drillTypes.forEach(({label, filter}) => {
-    const qs = LASTDAY_QUESTIONS.filter(filter);
-    if (!qs.length) return;
-    drillContent.appendChild(el('button', { class: 'sub-btn', onclick: () => {
-      state.questions = shuffle(qs);
-      state.answers = [];
-      state.index = 0;
-      state.view = 'exam';
-      state.wiseflowMode = false;
-      state.startTime = Date.now();
-      state.optionOrders = {};
-      state.questions.forEach((q,i) => {
-        if (q.options) state.optionOrders[i] = shuffle(q.options.map((_,j)=>j));
-      });
-      render();
-    }}, `${label} — ${qs.length} spørsmål`));
+  addFolder(no ? 'Sammenligning — Sant / Usant' : 'Comparison — True / False', 'folder-purple', (content) => {
+    content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(COMPARISON_TF_QUESTIONS, { title: no ? 'Alle sammenligninger' : 'All comparisons' }) }, (no ? 'Alle sammenligninger' : 'All comparisons') + ' — ' + COMPARISON_TF_QUESTIONS.length));
+    const cmpTopics = [
+      ['PCA vs LDA (8)', ['ctf_001','ctf_002','ctf_003','ctf_004','ctf_005','ctf_006','ctf_007','ctf_008']],
+      ['Ridge vs Lasso (7)', ['ctf_009','ctf_010','ctf_011','ctf_012','ctf_013','ctf_014','ctf_015']],
+      ['Bagging vs Boosting (7)', ['ctf_016','ctf_017','ctf_018','ctf_019','ctf_020','ctf_021','ctf_022']],
+      ['SVM vs KNN (5)', ['ctf_023','ctf_024','ctf_025','ctf_026','ctf_027']],
+      [no ? 'K-Means vs Hierarkisk (5)' : 'K-Means vs Hierarchical (5)', ['ctf_028','ctf_029','ctf_030','ctf_031','ctf_032']],
+      [no ? 'Bias vs Varians (5)' : 'Bias vs Variance (5)', ['ctf_033','ctf_034','ctf_035','ctf_036','ctf_037']],
+      ['Softmax vs Sigmoid (3)', ['ctf_038','ctf_039','ctf_040']],
+      [no ? 'Logistisk vs Lineær regresjon (5)' : 'Logistic vs Linear Regression (5)', ['ctf_041','ctf_042','ctf_043','ctf_044','ctf_045']],
+      ['Random Forest vs Gradient Boosting (5)', ['ctf_046','ctf_047','ctf_048','ctf_049','ctf_050']],
+      ['Hard margin vs Soft margin SVM (4)', ['ctf_051','ctf_052','ctf_053','ctf_054']],
+      [no ? 'Presisjon vs Recall (3)' : 'Precision vs Recall (3)', ['ctf_055','ctf_056','ctf_057']],
+      ['Overfitting vs Underfitting (3)', ['ctf_058','ctf_059','ctf_060']]
+    ];
+    cmpTopics.forEach(([label, ids]) => { const pool = COMPARISON_TF_QUESTIONS.filter(q => ids.includes(q.id)); content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool, { title: label }) }, label)); });
   });
-  drillFolder.appendChild(drillHeader);
-  drillFolder.appendChild(drillContent);
-  wrap.appendChild(drillFolder);
+  addFolder(t('folder_fquiz'), 'folder-amber', (content) => { content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(FORMULA_QUIZ_QUESTIONS, { title: t('folder_fquiz') }) }, (no ? 'Alle formler' : 'All formulas') + ' — ' + FORMULA_QUIZ_QUESTIONS.length)); });
+  addFolder(t('folder_qtypes'), 'folder-green', (content) => {
+    [[t('type_mc'), 'single'], [t('type_tf'), 'true_false'], [t('type_multi'), 'multi'], [t('type_order'), 'order'], [t('type_match'), 'match'], [t('type_fmatch'), 'formula_match'], [t('type_sym'), 'symbol'], [t('type_code'), 'code'], [t('type_plot'), 'plot'], [t('type_fig'), 'figure'], [t('type_scenario'), 'scenario'], [t('type_sc'), 'select_correct'], [t('type_sw'), 'select_wrong'], [t('type_process'), 'process']].forEach(([label, type]) => { const pool = QUESTIONS.filter(q => q.type === type); if (pool.length) content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool, { title: label }) }, label + ' — ' + pool.length)); });
+  });
+  addFolder(t('folder_pp'), 'folder-green', (content) => { for (const [chapter, count] of chaptersOf()) { const pool = QUESTIONS.filter(q => q.chapter === chapter); content.appendChild(el('button', { class: 'sub-btn', onclick: () => startExam(pool, { title: chapter }) }, chapter + ' — ' + count)); } });
+  wrap.appendChild(section(no ? 'Bibliotek' : 'Library', no ? 'Bruk dette målrettet, ikke som hovedløp.' : 'Use this intentionally, not as the main track.', folderStack, no ? 'Verktøy' : 'Tools'));
 
   if (state.history.total.taken > 0) {
-    const resetBtn = el('button', { class: 'reset-btn', onclick: () => {
-      if (confirm(t('reset_confirm'))) {
-        state.history = { chapters: {}, total: { taken: 0, correct: 0 } };
-        saveHistory();
-        render();
-      }
-    }}, t('reset'));
-    wrap.appendChild(resetBtn);
+    wrap.appendChild(el('button', { class: 'reset-btn', onclick: () => { if (confirm(t('reset_confirm'))) { state.history = { chapters: {}, total: { taken: 0, correct: 0 }, wrongIds: [], bookmarks: [], dark: state.history.dark }; saveHistory(); render(); } } }, t('reset')));
   }
-
-
   return wrap;
 }
 
@@ -18332,6 +18430,45 @@ function startExam(pool, opts = {}) {
   }, 1000);
   render();
 }
+
+function startWiseflowPool(pool, mins, title) {
+  state.currentPool = pool;
+  state.examTitle = title || null;
+  state.wiseflowMode = true;
+  state.questions = pool.slice();
+  state.currentChapter = null;
+  state.index = 0;
+  state.answers = [];
+  state.optionOrders = {};
+  state.questions.forEach((q, i) => { if (q.options) state.optionOrders[i] = shuffle(q.options.map((_, j) => j)); });
+  state.view = 'exam';
+  const SECS = mins * 60;
+  state.startTime = Date.now();
+  if (state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(() => {
+    const t = $('#timer');
+    const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+    const left = Math.max(0, SECS - elapsed);
+    if (t) {
+      t.textContent = formatTime(left);
+      t.style.color = left < 300 ? '#ef4444' : '';
+    }
+    if (left === 0) finishExam();
+  }, 1000);
+  render();
+}
+
+// 6 balanced WiseFLOW exams built from LASTDAY_QUESTIONS
+const LASTDAY_WF_EXAMS = (() => {
+  const N = 6;
+  const groups = ['ld_fb_', 'ld_tf_', 'ld_ms_', 'ld_mt_', 'ld_cp_', 'ld_code_'];
+  const exams = Array.from({ length: N }, () => []);
+  groups.forEach(prefix => {
+    const pool = shuffle(LASTDAY_QUESTIONS.filter(q => q.id.startsWith(prefix)));
+    pool.forEach((q, i) => exams[i % N].push(q));
+  });
+  return exams.map(e => shuffle(e));
+})();
 
 function startWiseflow() {
   const pool = shuffle(TOP100_QUESTIONS).slice(0, 15);

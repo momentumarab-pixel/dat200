@@ -17058,6 +17058,7 @@ const A_EXAM_PACKS = [
 ];
 const A_EXAM_QUESTIONS = A_EXAM_PACKS.flatMap(pack => pack.questions);
 const REVIEW_QUESTIONS = [...ALL_QUESTIONS, ...A_EXAM_QUESTIONS];
+// LASTDAY_QUESTIONS are defined later — we mutate this array right after.
 
 // ===== STATE =====
 const STORAGE_KEY = 'dat200_exam_v1';
@@ -18173,6 +18174,10 @@ const LASTDAY_QUESTIONS = [
 ];
 // ===== END SISTE-DAG DRILL =====
 
+// Make Siste-dag Drill questions reviewable so wrong answers from any test
+// (Drill, WiseFLOW, A-mode, etc.) end up in the Wrong Answer Drill pool.
+REVIEW_QUESTIONS.push(...LASTDAY_QUESTIONS);
+
 function chaptersOf() {
   const map = new Map();
   for (const q of QUESTIONS) {
@@ -18279,6 +18284,34 @@ function renderHome() {
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'comparison'; render(); } }, t('btn_comparison')));
   toolRow.appendChild(el('button', { class: 'formula-link-btn', onclick: () => { state.view = 'progress'; render(); } }, t('btn_progress')));
   wrap.appendChild(toolRow);
+
+  // ── Quick-access question type drills ─────────────────────────────────
+  const typeRow = el('div', { class: 'tool-row', style: 'flex-wrap:wrap;gap:8px;margin-bottom:24px;' });
+  const qTypes = [
+    [no ? 'Flervalg' : 'Multiple choice', 'single'],
+    [no ? 'Sant / Usant' : 'True / False', 'true_false'],
+    [no ? 'Multi-select' : 'Multi-select', 'multi'],
+    [no ? 'Rekkefølge' : 'Ordering', 'order'],
+    [no ? 'Match-par' : 'Matching pairs', 'match'],
+    [no ? 'Formel-match' : 'Formula matching', 'formula_match'],
+    [no ? 'Symbol / notasjon' : 'Symbol / notation', 'symbol'],
+    [no ? 'Kode-lesing' : 'Code reading', 'code'],
+    [no ? 'Plot-tolkning' : 'Plot interpretation', 'plot'],
+    [no ? 'Figur-analyse' : 'Figure analysis', 'figure'],
+    [no ? 'Scenario' : 'Scenario', 'scenario'],
+    [no ? 'Velg alle riktige' : 'Select all correct', 'select_correct'],
+    [no ? 'Velg den feile' : 'Select the wrong one', 'select_wrong'],
+    [no ? 'Prosess-steg' : 'Process steps', 'process'],
+  ];
+  qTypes.forEach(([label, type]) => {
+    const pool = [...QUESTIONS, ...LASTDAY_QUESTIONS, ...A_EXAM_QUESTIONS].filter(q => q.type === type);
+    if (!pool.length) return;
+    typeRow.appendChild(el('button', {
+      class: 'formula-link-btn',
+      onclick: () => startExam(pool, { title: label + ' — ' + pool.length })
+    }, label + ' (' + pool.length + ')'));
+  });
+  wrap.appendChild(typeRow);
 
   const totalQ = QUESTIONS.length;
   const totalChapters = new Set(QUESTIONS.map(q => q.chapter)).size;
